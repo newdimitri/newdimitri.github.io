@@ -87,7 +87,7 @@
 <meta property="og:description" content="简介牛顿迭代法（简称牛顿法）由英国著名的数学家牛顿爵士最早提出。但是，这一方法在牛顿生前并未公开发表。   牛顿法的作用是使用迭代的方法来求解函数方程的根。简单地说，牛顿法就是不断求取切线的过程。 对于形如f(x)=0的方程，首先任意估算一个解x0，再把该估计值代入原方程中。由于一般不会正好选择到正确的解，所以有f(x)=a。这时计算函数在x0处的斜率，和这条斜率与x轴的交点x1。 f(x)=0中">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://openarena.ws/shots/076/slimefac.jpg">
-<meta property="og:image" content="http://yoursite.com/Users/v_yuxiang/Desktop/Blog_hexo/source/_posts/20140113020213546.jpg">
+<meta property="og:image" content="http://yoursite.com/2018/12/05/牛顿迭代法-Newton-s-Method/Users/v_yuxiang/Desktop/Blog_hexo/source/_posts/20140113020213546.jpg">
 <meta property="og:updated_time" content="2018-12-05T14:12:17.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="牛顿迭代法(Newton&#39;s Method)">
@@ -391,7 +391,7 @@
 <p>对于形如f(x)=0的方程，首先任意估算一个解x0，再把该估计值代入原方程中。由于一般不会正好选择到正确的解，所以有f(x)=a。这时计算函数在x0处的斜率，和这条斜率与x轴的交点x1。</p>
 <p>f(x)=0中精确解的意义是，当取得解的时候，函数值为零（即f(x)的精确解是函数的零点）。因此，x1比x0更加接近精确的解。只要不断以此方法更新x，就可以取得无限接近的精确的解。</p>
 <p>但是，有可能会遇到牛顿迭代法无法收敛的情况。比如函数有多个零点，或者函数不连续的时候。</p>
-<p><strong>牛顿法举例</strong><br><img src="/Users/v_yuxiang/Desktop/Blog_hexo/source/_posts/20140113020213546.jpg" alt=""></p>
+<p><strong>牛顿法举例</strong><br><img src="/2018/12/05/牛顿迭代法-Newton-s-Method/Users/v_yuxiang/Desktop/Blog_hexo/source/_posts/20140113020213546.jpg" alt=""></p>
 <p>下面介绍使用牛顿迭代法求方根的例子。牛顿迭代法是已知的实现求方根最快的方法之一,只需要迭代几次后就能得到相当精确的结果。</p>
 <p>首先设x的m次方根为a。</p>
 <p>下面程序使用牛顿法求解平方根。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> EPS = <span class="number">0.00001</span>;   </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sqrt</span><span class="params">(<span class="keyword">double</span> x)</span> </span>&#123;   </span><br><span class="line">    <span class="keyword">if</span>(x == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">    <span class="keyword">double</span> result = x; <span class="comment">/*Use double to avoid possible overflow*/</span>   </span><br><span class="line">    <span class="keyword">double</span> lastValue;   </span><br><span class="line">    <span class="keyword">do</span>&#123;   </span><br><span class="line">        lastValue = result;   </span><br><span class="line">        result = result / <span class="number">2.0f</span> + x / <span class="number">2.0f</span> / result;   </span><br><span class="line">    &#125;<span class="keyword">while</span>(<span class="built_in">abs</span>(result - lastValue) &gt; EPS);  </span><br><span class="line"> <span class="keyword">return</span> (<span class="keyword">double</span>)result;  </span><br><span class="line"> &#125;  </span><br></pre></td></tr></table></figure></p>
@@ -510,7 +510,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
