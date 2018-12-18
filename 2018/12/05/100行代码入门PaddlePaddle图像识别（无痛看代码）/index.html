@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="&amp;emsp;&amp;emsp;导语：PaddlePaddle是由百度研发，国内首个开源的深度学习框架。你在学了N多机器学习课程后，发现要手写一个深度学习程序的时候仍会无从下手。本文目的是解决这种入门问题，适合有深度学习基础但不会写程序，或者会使用其他深度学习框架但想学习PaddlePaddle使用方式的人群。本文将带领大家将大脑中的想法及模型用PaddlePaddle框架实现出来。 设想一下，如果要实">
+<meta property="og:type" content="article">
+<meta property="og:title" content="100行代码入门PaddlePaddle图像识别（无痛看代码）">
+<meta property="og:url" content="http://yoursite.com/2018/12/05/100行代码入门PaddlePaddle图像识别（无痛看代码）/index.html">
+<meta property="og:site_name" content="于祥学习笔记">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;导语：PaddlePaddle是由百度研发，国内首个开源的深度学习框架。你在学了N多机器学习课程后，发现要手写一个深度学习程序的时候仍会无从下手。本文目的是解决这种入门问题，适合有深度学习基础但不会写程序，或者会使用其他深度学习框架但想学习PaddlePaddle使用方式的人群。本文将带领大家将大脑中的想法及模型用PaddlePaddle框架实现出来。 设想一下，如果要实">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-c5a5c11937f9ffbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-a3197ef1a0d795b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-2fd759c7a2db3646.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-12-05T14:21:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="100行代码入门PaddlePaddle图像识别（无痛看代码）">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;导语：PaddlePaddle是由百度研发，国内首个开源的深度学习框架。你在学了N多机器学习课程后，发现要手写一个深度学习程序的时候仍会无从下手。本文目的是解决这种入门问题，适合有深度学习基础但不会写程序，或者会使用其他深度学习框架但想学习PaddlePaddle使用方式的人群。本文将带领大家将大脑中的想法及模型用PaddlePaddle框架实现出来。 设想一下，如果要实">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/4463968-c5a5c11937f9ffbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/12/05/100行代码入门PaddlePaddle图像识别（无痛看代码）/">
+
+
+
+
+
+  <title>100行代码入门PaddlePaddle图像识别（无痛看代码） | 于祥学习笔记</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">于祥学习笔记</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">这里是子主题</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br>
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/12/05/100行代码入门PaddlePaddle图像识别（无痛看代码）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yimitri">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="于祥学习笔记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">100行代码入门PaddlePaddle图像识别（无痛看代码）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-05T22:15:08+08:00">
+                2018-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p> &emsp;&emsp;<strong>导语</strong>：PaddlePaddle是由百度研发，国内首个开源的深度学习框架。你在学了N多机器学习课程后，发现要手写一个深度学习程序的时候仍会无从下手。本文目的是解决这种入门问题，适合有深度学习基础但不会写程序，或者会使用其他深度学习框架但想学习PaddlePaddle使用方式的人群。本文将带领大家将大脑中的想法及模型用PaddlePaddle框架实现出来。</p>
+<p>设想一下，如果要实现一个图像分类的深度学习程序，有哪些必要的模块？首先想到的是他一定要有一个描述、定义网络结构的模块。在本文中我们就用VGG来描述网络结构，那第一个模块就是Vgg_bn_drop。有了这个网络模块我们可以推想出一定需要一个推理程序，这个程序会驱动网络模块产生一个输出，我们就叫这个输出为Predict。那第二个模块就是推理程序（Inference_Program）。我们有了Predict之后，在训练过程中自然需要将Predict与数据集中的Label进行比较，并通过损失函数来计算比较的差值。那第三个模块就是将Predict实例、Label定义、cost函数计算整合在一起的程序，它在PaddlePaddle里我们将它成为train_func，那在这里我们将第三个模块起名为train_program。在第三个模块里我们定义了cost，cost存在的意义是计算当前参数的推理与label的差值，从而调整网络中的参数，那我们就需要定义一个优化器来调整网络中的参数。所以第四个模块就是Optimizer。有了以上的四个模块，就将整个网络运转的流程（从推理到反向调整）都定义好了。<br><img src="https://upload-images.jianshu.io/upload_images/4463968-c5a5c11937f9ffbe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="上述结构图"></p>
+<p>我们将框架定义好之后，需要一个程序将这个框架给驱动起来。这个驱动程序还有一个作用是数据灌入框架中，让数据再里面流动起来（这也是Fluid这个词的由来）。在PaddlePaddle中，可以使用Trainer这个方法来实现这个功能。之后我们只需要将数据准备好，做成reader的格式，就可以使用Trainer中的train函数来执行训练啦。<br>千里之行，至于足下。我们来看一下第一步代码该怎么写。<br>一、第一步除了导入各种库之外，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import paddle</span><br><span class="line">import paddle.fluid as fluid</span><br><span class="line">import numpy</span><br><span class="line">import sys</span><br><span class="line">from __future__ import print_function #用于提供Python3标准的print特性</span><br></pre></td></tr></table></figure></p>
+<p>自然是要将我们的第一个模块——网络结构定义给实现出来。所以我们定义一个vgg_bn_drop的函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">def vgg_bn_drop(input):</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;我们观察一下VGG的网络结构<br><img src="https://upload-images.jianshu.io/upload_images/4463968-a3197ef1a0d795b6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="vgg16"></p>
+<p>&emsp;&emsp;可以发现VGG网络中有很多重复的部分，如果我们把这些重复的卷积操作化为一组，那么VGG中卷积的部分可以分为五组。在PaddlePaddle中对于这种连续的卷积操作可以用img_conv_group函数来实现。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">····<span class="function"><span class="keyword">def</span> <span class="title">conv_block</span><span class="params">(参数先空着)</span>:</span></span><br><span class="line">········<span class="keyword">return</span> fluid.nets.img_conv_group(）</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;img_conv_group是整合了卷积层、池化层、BatchNorm和DropOut的复合函数，并且可以很方便的支持连续卷及操作。我们想一下，对于每组连续卷积，我们需要定义哪些内容呢？首先它必须接受一个数据输入input。在卷积层方面，我们可以想到的是要定义卷积核大小、卷积核数量、卷积层激活函数；在池化层方面我们可以想到要定义池化区域的大小、池化窗口的步长以及池化的方法。那关于DropOut的功能我们需要提供一个DropOut的概率，在img_conv_group的参数中还有一个是否打开batchnorm的开关，需要指定一下。那么我们关img_conv_group的参数定义如下：<br> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">········<span class="keyword">return</span> fluid.nets.img_conv_group(</span><br><span class="line">            input=ipt,</span><br><span class="line">            conv_filter_size=<span class="number">3</span>,</span><br><span class="line">            conv_num_filter=[num_filter] * groups,</span><br><span class="line">            conv_act=<span class="string">'relu'</span>,</span><br><span class="line">            pool_size=<span class="number">2</span>,</span><br><span class="line">            pool_stride=<span class="number">2</span>,</span><br><span class="line">            pool_type=<span class="string">'max'</span></span><br><span class="line">            conv_with_batchnorm=<span class="keyword">True</span>,</span><br><span class="line">            conv_batchnorm_drop_rate=dropouts)</span><br></pre></td></tr></table></figure></p>
+<p>根据VGG的网络图我们发现所有卷积层的卷积核都为3*3，那么我们在参数中就直接指定一个参数3，如果在此处给定两个参数，PaddlePaddle会认为这是个WH格式的矩形卷积核。conv_num_filte参数需要给定这组连续卷积操作中所有的卷积核数量，以用来统一初始化，所以这里需要在num_filter后乘上group的数量。根据论文我们可以知道激活函数为’relu’。根据VGG的网络图我们看到是二分之一池化，所以pool_size和pool_stride都定义为2。之后使用最大池化方法、打开batchnorm选项、指定dropout的概率。需要注意的是这里给到的dropout需要以Python中List数据结构给出，这个list存放的是连续卷积中每一层卷积的dropout概率。到这里img_conv_group的定义就完成。根据这些参数，去除硬编码的参数我们发现input、num_filter、groups、dropouts需要在上层函数中传递。所以conv_block参数如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">····<span class="function"><span class="keyword">def</span> <span class="title">conv_block</span><span class="params">(ipt, num_filter, groups, dropouts)</span>:</span></span><br></pre></td></tr></table></figure></p>
+<p>所以在这一步我们的连续卷积定义就完成啦。但是我们的conv_block不能只有连续卷积的定义，还需要将他按照VGG模型的样子给组装起来。那么卷积层的组装代码为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">····conv1 = conv_block(input, <span class="number">64</span>, <span class="number">2</span>, [<span class="number">0.3</span>, <span class="number">0</span>])</span><br><span class="line">    conv2 = conv_block(conv1, <span class="number">128</span>, <span class="number">2</span>, [<span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv3 = conv_block(conv2, <span class="number">256</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv4 = conv_block(conv3, <span class="number">512</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv5 = conv_block(conv4, <span class="number">512</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br></pre></td></tr></table></figure></p>
+<p>从第二层开始，每一层接受上一层的输出，第二个参数根据VGG结构定义每一层输出的维度，第三个参数定义连续卷积的次数，第四个参数定义dropout的概率，最后一层不进行dropout操作。根据网络结构，后面需要做三层全连接操作，定义如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">····drop = fluid.layers.dropout(x=conv5, dropout_prob=<span class="number">0.5</span>)</span><br><span class="line">    fc1 = fluid.layers.fc(input=drop, size=<span class="number">512</span>, act=<span class="keyword">None</span>)</span><br><span class="line">    bn = fluid.layers.batch_norm(input=fc1, act=<span class="string">'relu'</span>)</span><br><span class="line">    drop2 = fluid.layers.dropout(x=bn, dropout_prob=<span class="number">0.5</span>)</span><br><span class="line">    fc2 = fluid.layers.fc(input=drop2, size=<span class="number">512</span>, act=<span class="keyword">None</span>)</span><br><span class="line">    predict = fluid.layers.fc(input=fc2, size=<span class="number">10</span>, act=<span class="string">'softmax'</span>)</span><br></pre></td></tr></table></figure></p>
+<p>这里用到了PaddlePaddle内置的算子，有全连接layers.fc，batch_norm和dropout。所以整个vgg_bn_drop代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vgg_bn_drop</span><span class="params">(input)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">conv_block</span><span class="params">(ipt, num_filter, groups, dropouts)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> fluid.nets.img_conv_group(</span><br><span class="line">            input=ipt,</span><br><span class="line">            pool_size=<span class="number">2</span>,</span><br><span class="line">            pool_stride=<span class="number">2</span>,</span><br><span class="line">            conv_num_filter=[num_filter] * groups,</span><br><span class="line">            conv_filter_size=<span class="number">3</span>,</span><br><span class="line">            conv_act=<span class="string">'relu'</span>,</span><br><span class="line">            conv_with_batchnorm=<span class="keyword">True</span>,</span><br><span class="line">            conv_batchnorm_drop_rate=dropouts,</span><br><span class="line">            pool_type=<span class="string">'max'</span>)</span><br><span class="line"></span><br><span class="line">    conv1 = conv_block(input, <span class="number">64</span>, <span class="number">2</span>, [<span class="number">0.3</span>, <span class="number">0</span>])</span><br><span class="line">    conv2 = conv_block(conv1, <span class="number">128</span>, <span class="number">2</span>, [<span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv3 = conv_block(conv2, <span class="number">256</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv4 = conv_block(conv3, <span class="number">512</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv5 = conv_block(conv4, <span class="number">512</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">    drop = fluid.layers.dropout(x=conv5, dropout_prob=<span class="number">0.5</span>)</span><br><span class="line">    fc1 = fluid.layers.fc(input=drop, size=<span class="number">512</span>, act=<span class="keyword">None</span>)</span><br><span class="line">    bn = fluid.layers.batch_norm(input=fc1, act=<span class="string">'relu'</span>)</span><br><span class="line">    drop2 = fluid.layers.dropout(x=bn, dropout_prob=<span class="number">0.5</span>)</span><br><span class="line">    fc2 = fluid.layers.fc(input=drop2, size=<span class="number">512</span>, act=<span class="keyword">None</span>)</span><br><span class="line">    predict = fluid.layers.fc(input=fc2, size=<span class="number">10</span>, act=<span class="string">'softmax'</span>)</span><br><span class="line">    <span class="keyword">return</span> predict</span><br></pre></td></tr></table></figure></p>
+<p>二、定义好网络结构以后，我们需要将网络的输出Predict给接住，并且将它的奶嘴（输入格式）给备好，所以我们定义<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inference_program</span><span class="params">()</span>:</span></span><br></pre></td></tr></table></figure></p>
+<p>方法时要先接住输出：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">predict = vgg_bn_drop(images)</span><br></pre></td></tr></table></figure></p>
+<p>再喂上奶嘴：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">data_shape = [<span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>]</span><br><span class="line">images = fluid.layers.data(name=<span class="string">'pixel'</span>, shape=data_shape, dtype=<span class="string">'float32'</span>)</span><br><span class="line">predict = vgg_bn_drop(images) <span class="comment"># un-comment to use vgg net</span></span><br></pre></td></tr></table></figure></p>
+<p>在PaddlePaddle中，无论是图像数据，张量数据还是标签数据，都可以用layers.data容器来存放。在data函数中，’name’参数是可以自定义指定的。因为本实验是使用cifar10的数据，是3通道32x32的图片。所以inference_program的代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inference_program</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># The image is 32 * 32 with RGB representation.</span></span><br><span class="line">    data_shape = [<span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>]</span><br><span class="line">    images = fluid.layers.data(name=<span class="string">'pixel'</span>, shape=data_shape, dtype=<span class="string">'float32'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#predict = resnet_cifar10(images, 32)</span></span><br><span class="line">    predict = vgg_bn_drop(images) <span class="comment"># un-comment to use vgg net</span></span><br><span class="line">    <span class="keyword">return</span> predict</span><br></pre></td></tr></table></figure></p>
+<p>三、根据开头讲的思路，我们有了推理模块后，需要将Predict和label进行交叉对比计算，所以我们需要一个train_program。train_program起到的作用是定义label、计算损失函数、计算准确率。他需要将每一批的平均cost和准确率转给下一步的优化器。所以train_program的定义如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_program</span><span class="params">()</span>:</span></span><br><span class="line">    predict = inference_program()</span><br><span class="line">    label = fluid.layers.data(name=<span class="string">'label'</span>, shape=[<span class="number">1</span>], dtype=<span class="string">'int64'</span>)</span><br><span class="line">    cost = fluid.layers.cross_entropy(input=predict, label=label)</span><br><span class="line">    avg_cost = fluid.layers.mean(cost)</span><br><span class="line">    accuracy = fluid.layers.accuracy(input=predict, label=label)</span><br><span class="line">    <span class="keyword">return</span> [avg_cost, accuracy]</span><br></pre></td></tr></table></figure></p>
+<p>我们得到cost之后，在训练过程需要根据cost返回的数据来反向调整神经网络中的参数，那反向调整参数的模块就叫optimizer_program，我们对optimizer_program的定义只需要返回指定的optimizer即可（在这里指定学习率超参数）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">optimizer_program</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> fluid.optimizer.Adam(learning_rate=<span class="number">0.001</span>)</span><br></pre></td></tr></table></figure></p>
+<p>四、有了以上三个模块，训练-推理-调整这一个有向循环图就构成了。现在我们就像已经将自来水管道修好，需要往里通水的状态。那我们整个循环系统的中控程序是什么呢？是fluid.Trainer。在PaddlePaddle中fluid.Trainer是一个较高层的API，使用时只需将fluid.Trainer这个类实例化即可，启动实例化对象中的.train()方法即可启动网络训练。那这就涉及到了两个步骤：实例化对象和启动训练。</p>
+<p>五、在实例化对象时需要指定3个参数：train_func、optimizer和place。train_func就是我们刚才定义的train_program，它包含了网络正向推理及cost的所有信息，只需将train_program传递给train_func参数就好。optimizer如同一辙。place的含义是整个训练程序在哪个设备上运行，不用多说，计算机中进行大规模计算的硬件只有CPU和GPU。为了程序设计规范，我们设置一个指定设备的开关：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">use_cuda = <span class="keyword">False</span></span><br><span class="line">place = fluid.CUDAPlace(<span class="number">0</span>) <span class="keyword">if</span> use_cuda <span class="keyword">else</span> fluid.CPUPlace()</span><br></pre></td></tr></table></figure></p>
+<p>这样我们就可以将Trainer实例化部分给写出来了：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">use_cuda = <span class="keyword">False</span></span><br><span class="line">place = fluid.CUDAPlace(<span class="number">0</span>) <span class="keyword">if</span> use_cuda <span class="keyword">else</span> fluid.CPUPlace()</span><br><span class="line">trainer = fluid.Trainer(</span><br><span class="line">    train_func=train_program,</span><br><span class="line">    optimizer_func=optimizer_program,</span><br><span class="line">    place=place)</span><br></pre></td></tr></table></figure></p>
+<p>六、读到这里是不是想赶紧运行一下trainer.train()赶紧让他先跑起来？且慢，我们发现，我们只定义了数据的容器（杯子），且从没有处理让真正数据读进网络的代码（水）。所以我们还需要写一个数据读取、预处理的模块。因为图像识别的网络都是将图片一批一批训练的，所以显而易见我们需要数据读入和分批这两个操作。PaddlePaddle在daraset包里存放个各种各样公开数据库的API，一句话就可以调用这些数据包，并返回Python reader格式的数据。所以我们的流程是先将数据从API中读出来，然后做乱序处理，之后用batch函数进行分批操作（在这里指定BATCH_SIZE超参数）：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Each batch will yield 128 images</span></span><br><span class="line">BATCH_SIZE = <span class="number">128</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Reader for training</span></span><br><span class="line">train_reader = paddle.batch(</span><br><span class="line">    paddle.reader.shuffle(paddle.dataset.cifar.train10(), buf_size=<span class="number">50000</span>),</span><br><span class="line">    batch_size=BATCH_SIZE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Reader for testing. A separated data set for testing.</span></span><br><span class="line">test_reader = paddle.batch(</span><br><span class="line">    paddle.dataset.cifar.test10(), batch_size=BATCH_SIZE)</span><br></pre></td></tr></table></figure></p>
+<p>七、是不是觉得有了数据就可以跑起来了？Naive~ 在trainer中，必须指定一个事件处理函数才可以运行。这个函数的作用是观察、调试参数，保存参数模型。这里我们用画图的方式来观察网络中cost参数的变化过程：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">params_dirname = <span class="string">"image_classification_resnet.inference.model"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> paddle.v2.plot <span class="keyword">import</span> Ploter</span><br><span class="line"></span><br><span class="line">train_title = <span class="string">"Train cost"</span></span><br><span class="line">test_title = <span class="string">"Test cost"</span></span><br><span class="line">cost_ploter = Ploter(train_title, test_title)</span><br><span class="line"></span><br><span class="line">step = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">event_handler_plot</span><span class="params">(event)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> step</span><br><span class="line">    <span class="keyword">if</span> isinstance(event, fluid.EndStepEvent):</span><br><span class="line">        cost_ploter.append(train_title, step, event.metrics[<span class="number">0</span>])</span><br><span class="line">        cost_ploter.plot()</span><br><span class="line">        step += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(event, fluid.EndEpochEvent):</span><br><span class="line">        avg_cost, accuracy = trainer.test(</span><br><span class="line">            reader=test_reader,</span><br><span class="line">            feed_order=[<span class="string">'pixel'</span>, <span class="string">'label'</span>])</span><br><span class="line">        cost_ploter.append(test_title, step, avg_cost)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># save parameters</span></span><br><span class="line">        <span class="keyword">if</span> params_dirname <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            trainer.save_params(params_dirname)</span><br></pre></td></tr></table></figure></p>
+<p>使用paddle.v2.plot可以轻松在ipython notebook中将参数点在图像中画出来，核心代码只有一个 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">八、现在可以执行训练了，启动trainer.train方法需要指定4个必要参数：reader（Python reader格式的数据流）、num_epochs（对数据集训练轮次的超参数）、event_handler（事件处理函数）、feed_order（存放训练数据和标签的容器）。所以代码如下：</span><br><span class="line">```Python</span><br><span class="line">trainer.train(</span><br><span class="line">    reader=train_reader,</span><br><span class="line">    num_epochs=2,</span><br><span class="line">    event_handler=event_handler_plot,</span><br><span class="line">    feed_order=[&apos;pixel&apos;, &apos;label&apos;])</span><br></pre></td></tr></table></figure></p>
+<p>等待一会就可以看到输出不断变化的cost值了：<br><img src="https://upload-images.jianshu.io/upload_images/4463968-2fd759c7a2db3646.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="横坐标为训练批次数，纵坐标为cost的批次均值"></p>
+<p>九、在训练一轮数据集之后，模型便保存在我们制定的路径中了。那如何使用这个模型来进行预测呢？PaddlePaddle的预测代码很简单，先实例化一个预测引擎<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">```Python</span><br><span class="line">inferencer = fluid.Inferencer(infer_func=inference_program, param_path=params_dirname, place=place)</span><br><span class="line">results = inferencer.infer(&#123;&apos;pixel&apos;: img&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>我们从results中取到的是由每一分类的似然值构成的List。ifar.train10是10分类数据，所以我们将这个分类的名称用人类的语言来描述一下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">label_list = [<span class="string">"airplane"</span>, <span class="string">"automobile"</span>, <span class="string">"bird"</span>, <span class="string">"cat"</span>, <span class="string">"deer"</span>, <span class="string">"dog"</span>, <span class="string">"frog"</span>, <span class="string">"horse"</span>, <span class="string">"ship"</span>, <span class="string">"truck"</span>]</span><br></pre></td></tr></table></figure></p>
+<p>然后result这个List中用np.argmax取最大概率的位置值，将其对应的label输出就得到了我们想要的分类了：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">"infer results: %s"</span> % label_list[np.argmax(results[<span class="number">0</span>])])</span><br></pre></td></tr></table></figure></p>
+<p>你以为大功告成了吗？仔细看一下<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">```Python</span><br><span class="line"># Prepare testing data.</span><br><span class="line">from PIL import Image</span><br><span class="line">import numpy as np</span><br><span class="line">import os</span><br><span class="line"></span><br><span class="line">def load_image(file):</span><br><span class="line">    im = Image.open(file)</span><br><span class="line">    im = im.resize((32, 32), Image.ANTIALIAS)</span><br><span class="line"></span><br><span class="line">    im = np.array(im).astype(np.float32)#浮点精度转换</span><br><span class="line">    im = im.transpose((2, 0, 1))  # 转为CHW顺序</span><br><span class="line">    im = im / 255.0 #归一化在[-1,1]的区间内</span><br><span class="line"></span><br><span class="line">    # Add one dimension to mimic the list format.</span><br><span class="line">    im = numpy.expand_dims(im, axis=0)</span><br><span class="line">    return im</span><br><span class="line"></span><br><span class="line">cur_dir = os.getcwd()#拼接为绝对地址</span><br><span class="line">img = load_image( &apos;./image/dog.png&apos;)#要预测图像的地址</span><br></pre></td></tr></table></figure></p>
+<p>所以我们的整段预测代码为：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Prepare testing data.</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_image</span><span class="params">(file)</span>:</span></span><br><span class="line">    im = Image.open(file)</span><br><span class="line">    im = im.resize((<span class="number">32</span>, <span class="number">32</span>), Image.ANTIALIAS)</span><br><span class="line"></span><br><span class="line">    im = np.array(im).astype(np.float32)</span><br><span class="line">    <span class="comment"># The storage order of the loaded image is W(width),</span></span><br><span class="line">    <span class="comment"># H(height), C(channel). PaddlePaddle requires</span></span><br><span class="line">    <span class="comment"># the CHW order, so transpose them.</span></span><br><span class="line">    im = im.transpose((<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># CHW</span></span><br><span class="line">    im = im / <span class="number">255.0</span> <span class="comment">#-1 - 1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Add one dimension to mimic the list format.</span></span><br><span class="line">    im = numpy.expand_dims(im, axis=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> im</span><br><span class="line"></span><br><span class="line">cur_dir = os.getcwd()</span><br><span class="line">img = load_image(cur_dir + <span class="string">'/03.image_classification/image/dog.png'</span>)</span><br><span class="line"><span class="comment">#img = load_image( './image/dog.png')</span></span><br><span class="line"></span><br><span class="line">inferencer = fluid.Inferencer(infer_func=inference_program, param_path=params_dirname, place=place)</span><br><span class="line"></span><br><span class="line">label_list = [<span class="string">"airplane"</span>, <span class="string">"automobile"</span>, <span class="string">"bird"</span>, <span class="string">"cat"</span>, <span class="string">"deer"</span>, <span class="string">"dog"</span>, <span class="string">"frog"</span>, <span class="string">"horse"</span>, <span class="string">"ship"</span>, <span class="string">"truck"</span>]</span><br><span class="line"><span class="comment"># inference</span></span><br><span class="line">results = inferencer.infer(&#123;<span class="string">'pixel'</span>: img&#125;)</span><br><span class="line"><span class="comment">#print(results[0])</span></span><br><span class="line">print(<span class="string">"infer results: %s"</span> % label_list[np.argmax(results[<span class="number">0</span>])+<span class="number">1</span>])</span><br></pre></td></tr></table></figure></p>
+<p>十、附整个过程的完整代码：<br> <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> paddle</span><br><span class="line"><span class="keyword">import</span> paddle.fluid <span class="keyword">as</span> fluid</span><br><span class="line"><span class="keyword">import</span> numpy</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> print_function</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">vgg_bn_drop</span><span class="params">(input)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">conv_block</span><span class="params">(ipt, num_filter, groups, dropouts)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> fluid.nets.img_conv_group(</span><br><span class="line">            input=ipt,</span><br><span class="line">            pool_size=<span class="number">2</span>,</span><br><span class="line">            pool_stride=<span class="number">2</span>,</span><br><span class="line">            conv_num_filter=[num_filter] * groups,</span><br><span class="line">            conv_filter_size=<span class="number">3</span>,</span><br><span class="line">            conv_act=<span class="string">'relu'</span>,</span><br><span class="line">            conv_with_batchnorm=<span class="keyword">True</span>,</span><br><span class="line">            conv_batchnorm_drop_rate=dropouts,</span><br><span class="line">            pool_type=<span class="string">'max'</span>)</span><br><span class="line"></span><br><span class="line">    conv1 = conv_block(input, <span class="number">64</span>, <span class="number">2</span>, [<span class="number">0.3</span>, <span class="number">0</span>])</span><br><span class="line">    conv2 = conv_block(conv1, <span class="number">128</span>, <span class="number">2</span>, [<span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv3 = conv_block(conv2, <span class="number">256</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv4 = conv_block(conv3, <span class="number">512</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line">    conv5 = conv_block(conv4, <span class="number">512</span>, <span class="number">3</span>, [<span class="number">0.4</span>, <span class="number">0.4</span>, <span class="number">0</span>])</span><br><span class="line"></span><br><span class="line">    drop = fluid.layers.dropout(x=conv5, dropout_prob=<span class="number">0.5</span>)</span><br><span class="line">    fc1 = fluid.layers.fc(input=drop, size=<span class="number">512</span>, act=<span class="keyword">None</span>)</span><br><span class="line">    bn = fluid.layers.batch_norm(input=fc1, act=<span class="string">'relu'</span>)</span><br><span class="line">    drop2 = fluid.layers.dropout(x=bn, dropout_prob=<span class="number">0.5</span>)</span><br><span class="line">    fc2 = fluid.layers.fc(input=drop2, size=<span class="number">512</span>, act=<span class="keyword">None</span>)</span><br><span class="line">    predict = fluid.layers.fc(input=fc2, size=<span class="number">10</span>, act=<span class="string">'softmax'</span>)</span><br><span class="line">    <span class="keyword">return</span> predict</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">inference_program</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># The image is 32 * 32 with RGB representation.</span></span><br><span class="line">    data_shape = [<span class="number">3</span>, <span class="number">32</span>, <span class="number">32</span>]</span><br><span class="line">    images = fluid.layers.data(name=<span class="string">'pixel'</span>, shape=data_shape, dtype=<span class="string">'float32'</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment">#predict = resnet_cifar10(images, 32)</span></span><br><span class="line">    predict = vgg_bn_drop(images) <span class="comment"># un-comment to use vgg net</span></span><br><span class="line">    <span class="keyword">return</span> predict</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">train_program</span><span class="params">()</span>:</span></span><br><span class="line">    predict = inference_program()</span><br><span class="line"></span><br><span class="line">    label = fluid.layers.data(name=<span class="string">'label'</span>, shape=[<span class="number">1</span>], dtype=<span class="string">'int64'</span>)</span><br><span class="line">    cost = fluid.layers.cross_entropy(input=predict, label=label)</span><br><span class="line">    avg_cost = fluid.layers.mean(cost)</span><br><span class="line">    accuracy = fluid.layers.accuracy(input=predict, label=label)</span><br><span class="line">    <span class="keyword">return</span> [avg_cost, accuracy]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">optimizer_program</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">return</span> fluid.optimizer.Adam(learning_rate=<span class="number">0.001</span>)</span><br><span class="line"></span><br><span class="line">use_cuda = <span class="keyword">False</span></span><br><span class="line">place = fluid.CUDAPlace(<span class="number">0</span>) <span class="keyword">if</span> use_cuda <span class="keyword">else</span> fluid.CPUPlace()</span><br><span class="line">trainer = fluid.Trainer(</span><br><span class="line">    train_func=train_program,</span><br><span class="line">    optimizer_func=optimizer_program,</span><br><span class="line">    place=place)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Each batch will yield 128 images</span></span><br><span class="line">BATCH_SIZE = <span class="number">128</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Reader for training</span></span><br><span class="line">train_reader = paddle.batch(</span><br><span class="line">    paddle.reader.shuffle(paddle.dataset.cifar.train10(), buf_size=<span class="number">50000</span>),</span><br><span class="line">    batch_size=BATCH_SIZE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Reader for testing. A separated data set for testing.</span></span><br><span class="line">test_reader = paddle.batch(</span><br><span class="line">    paddle.dataset.cifar.test10(), batch_size=BATCH_SIZE)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">params_dirname = <span class="string">"image_classification_resnet.inference.model"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> paddle.v2.plot <span class="keyword">import</span> Ploter</span><br><span class="line"></span><br><span class="line">train_title = <span class="string">"Train cost"</span></span><br><span class="line">test_title = <span class="string">"Test cost"</span></span><br><span class="line">cost_ploter = Ploter(train_title, test_title)</span><br><span class="line"></span><br><span class="line">step = <span class="number">0</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">event_handler_plot</span><span class="params">(event)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> step</span><br><span class="line">    <span class="keyword">if</span> isinstance(event, fluid.EndStepEvent):</span><br><span class="line">        cost_ploter.append(train_title, step, event.metrics[<span class="number">0</span>])</span><br><span class="line">        cost_ploter.plot()</span><br><span class="line">        step += <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(event, fluid.EndEpochEvent):</span><br><span class="line">        avg_cost, accuracy = trainer.test(</span><br><span class="line">            reader=test_reader,</span><br><span class="line">            feed_order=[<span class="string">'pixel'</span>, <span class="string">'label'</span>])</span><br><span class="line">        cost_ploter.append(test_title, step, avg_cost)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># save parameters</span></span><br><span class="line">        <span class="keyword">if</span> params_dirname <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">None</span>:</span><br><span class="line">            trainer.save_params(params_dirname)</span><br><span class="line"></span><br><span class="line">trainer.train(</span><br><span class="line">    reader=train_reader,</span><br><span class="line">    num_epochs=<span class="number">2</span>,</span><br><span class="line">    event_handler=event_handler_plot,</span><br><span class="line">    feed_order=[<span class="string">'pixel'</span>, <span class="string">'label'</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># Prepare testing data.</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_image</span><span class="params">(file)</span>:</span></span><br><span class="line">    im = Image.open(file)</span><br><span class="line">    im = im.resize((<span class="number">32</span>, <span class="number">32</span>), Image.ANTIALIAS)</span><br><span class="line"></span><br><span class="line">    im = np.array(im).astype(np.float32)</span><br><span class="line">    <span class="comment"># The storage order of the loaded image is W(width),</span></span><br><span class="line">    <span class="comment"># H(height), C(channel). PaddlePaddle requires</span></span><br><span class="line">    <span class="comment"># the CHW order, so transpose them.</span></span><br><span class="line">    im = im.transpose((<span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>))  <span class="comment"># CHW</span></span><br><span class="line">    im = im / <span class="number">255.0</span> <span class="comment">#-1 - 1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Add one dimension to mimic the list format.</span></span><br><span class="line">    im = numpy.expand_dims(im, axis=<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> im</span><br><span class="line"></span><br><span class="line">cur_dir = os.getcwd()</span><br><span class="line">img = load_image(cur_dir + <span class="string">'/03.image_classification/image/dog.png'</span>)</span><br><span class="line"><span class="comment">#img = load_image( './image/dog.png')</span></span><br><span class="line"></span><br><span class="line">inferencer = fluid.Inferencer(infer_func=inference_program, param_path=params_dirname, place=place)</span><br><span class="line"></span><br><span class="line">label_list = [<span class="string">"airplane"</span>, <span class="string">"automobile"</span>, <span class="string">"bird"</span>, <span class="string">"cat"</span>, <span class="string">"deer"</span>, <span class="string">"dog"</span>, <span class="string">"frog"</span>, <span class="string">"horse"</span>, <span class="string">"ship"</span>, <span class="string">"truck"</span>]</span><br><span class="line"><span class="comment"># inference</span></span><br><span class="line">results = inferencer.infer(&#123;<span class="string">'pixel'</span>: img&#125;)</span><br><span class="line"><span class="comment">#print(results[0])</span></span><br><span class="line">print(<span class="string">"infer results: %s"</span> % label_list[np.argmax(results[<span class="number">0</span>])+<span class="number">1</span>])</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/12/05/牛顿迭代法-Newton-s-Method/" rel="next" title="牛顿迭代法(Newton's Method)">
+                <i class="fa fa-chevron-left"></i> 牛顿迭代法(Newton's Method)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/14/recommender_system/" rel="prev" title="个性化推荐">
+                个性化推荐 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Yimitri</p>
+              <p class="site-description motion-element" itemprop="description">深度学习 机器学习 网络安全 神经网络</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yimitri</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
