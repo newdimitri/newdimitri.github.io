@@ -5,7 +5,7 @@
   
 
 
-<html class="theme-next muse use-motion" lang="zh-Hans">
+<html class="theme-next pisces use-motion" lang="zh-Hans">
 <head><meta name="generator" content="Hexo 3.8.0">
   <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="简介牛顿迭代法（简称牛顿法）由英国著名的数学家牛顿爵士最早提出。但是，这一方法在牛顿生前并未公开发表。   牛顿法的作用是使用迭代的方法来求解函数方程的根。简单地说，牛顿法就是不断求取切线的过程。 对于形如f(x)=0的方程，首先任意估算一个解x0，再把该估计值代入原方程中。由于一般不会正好选择到正确的解，所以有f(x)=a。这时计算函数在x0处的斜率，和这条斜率与x轴的交点x1。 f(x)=0中">
+<meta name="description" content="解释了雷神之锤3引擎中一段很神奇求平方根的方法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="牛顿迭代法(Newton&#39;s Method)">
 <meta property="og:url" content="http://yoursite.com/2018/12/05/牛顿迭代法-Newton-s-Method/index.html">
-<meta property="og:site_name" content="于祥学习笔记">
-<meta property="og:description" content="简介牛顿迭代法（简称牛顿法）由英国著名的数学家牛顿爵士最早提出。但是，这一方法在牛顿生前并未公开发表。   牛顿法的作用是使用迭代的方法来求解函数方程的根。简单地说，牛顿法就是不断求取切线的过程。 对于形如f(x)=0的方程，首先任意估算一个解x0，再把该估计值代入原方程中。由于一般不会正好选择到正确的解，所以有f(x)=a。这时计算函数在x0处的斜率，和这条斜率与x轴的交点x1。 f(x)=0中">
+<meta property="og:site_name" content="于祥个人站">
+<meta property="og:description" content="解释了雷神之锤3引擎中一段很神奇求平方根的方法">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://openarena.ws/shots/076/slimefac.jpg">
 <meta property="og:image" content="http://yoursite.com/2018/12/05/牛顿迭代法-Newton-s-Method/Users/v_yuxiang/Desktop/Blog_hexo/source/_posts/20140113020213546.jpg">
-<meta property="og:updated_time" content="2018-12-05T14:12:17.000Z">
+<meta property="og:updated_time" content="2019-03-29T09:17:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="牛顿迭代法(Newton&#39;s Method)">
-<meta name="twitter:description" content="简介牛顿迭代法（简称牛顿法）由英国著名的数学家牛顿爵士最早提出。但是，这一方法在牛顿生前并未公开发表。   牛顿法的作用是使用迭代的方法来求解函数方程的根。简单地说，牛顿法就是不断求取切线的过程。 对于形如f(x)=0的方程，首先任意估算一个解x0，再把该估计值代入原方程中。由于一般不会正好选择到正确的解，所以有f(x)=a。这时计算函数在x0处的斜率，和这条斜率与x轴的交点x1。 f(x)=0中">
+<meta name="twitter:description" content="解释了雷神之锤3引擎中一段很神奇求平方根的方法">
 <meta name="twitter:image" content="http://openarena.ws/shots/076/slimefac.jpg">
 
 
@@ -100,9 +100,9 @@
   var NexT = window.NexT || {};
   var CONFIG = {
     root: '/',
-    scheme: 'Muse',
+    scheme: 'Pisces',
     version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -128,12 +128,22 @@
 
 
 
-  <title>牛顿迭代法(Newton's Method) | 于祥学习笔记</title>
+  <title>牛顿迭代法(Newton's Method) | 于祥个人站</title>
   
 
 
 
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b8223f071382d4239a383d450de56d81";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -147,7 +157,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -158,12 +168,12 @@
     <div class="custom-logo-site-title">
       <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
-        <span class="site-title">于祥学习笔记</span>
+        <span class="site-title">于祥个人站</span>
         <span class="logo-line-after"><i></i></span>
       </a>
     </div>
       
-        <p class="site-subtitle">记录于祥学过的内容</p>
+        <p class="site-subtitle">暂时用于记录于祥学过的内容</p>
       
   </div>
 
@@ -193,22 +203,32 @@
         </li>
       
         
-        <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
-            
-            分类
-          </a>
-        </li>
-      
-        
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
           </a>
         </li>
       
@@ -250,11 +270,11 @@
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yimitri">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="image" content="/headpic.png">
     </span>
 
     <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="于祥学习笔记">
+      <meta itemprop="name" content="于祥个人站">
     </span>
 
     
@@ -320,6 +340,10 @@
           
 
           
+              <div class="post-description">
+                  解释了雷神之锤3引擎中一段很神奇求平方根的方法
+              </div>
+          
 
         </div>
       </header>
@@ -342,8 +366,7 @@
 <p>f(x)=0中精确解的意义是，当取得解的时候，函数值为零（即f(x)的精确解是函数的零点）。因此，x1比x0更加接近精确的解。只要不断以此方法更新x，就可以取得无限接近的精确的解。</p>
 <p>但是，有可能会遇到牛顿迭代法无法收敛的情况。比如函数有多个零点，或者函数不连续的时候。</p>
 <p><strong>牛顿法举例</strong><br><img src="/2018/12/05/牛顿迭代法-Newton-s-Method/Users/v_yuxiang/Desktop/Blog_hexo/source/_posts/20140113020213546.jpg" alt=""></p>
-<p>下面介绍使用牛顿迭代法求方根的例子。牛顿迭代法是已知的实现求方根最快的方法之一,只需要迭代几次后就能得到相当精确的结果。</p>
-<p>首先设x的m次方根为a。</p>
+<p>下面介绍使用牛顿迭代法求方根的例子。牛顿迭代法是已知的实现求方根最快的方法之一,只需要迭代几次后就能得到相当精确的结果。<br><a id="more"></a><br>首先设x的m次方根为a。</p>
 <p>下面程序使用牛顿法求解平方根。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">float</span> EPS = <span class="number">0.00001</span>;   </span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">sqrt</span><span class="params">(<span class="keyword">double</span> x)</span> </span>&#123;   </span><br><span class="line">    <span class="keyword">if</span>(x == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">0</span>;   </span><br><span class="line">    <span class="keyword">double</span> result = x; <span class="comment">/*Use double to avoid possible overflow*/</span>   </span><br><span class="line">    <span class="keyword">double</span> lastValue;   </span><br><span class="line">    <span class="keyword">do</span>&#123;   </span><br><span class="line">        lastValue = result;   </span><br><span class="line">        result = result / <span class="number">2.0f</span> + x / <span class="number">2.0f</span> / result;   </span><br><span class="line">    &#125;<span class="keyword">while</span>(<span class="built_in">abs</span>(result - lastValue) &gt; EPS);  </span><br><span class="line"> <span class="keyword">return</span> (<span class="keyword">double</span>)result;  </span><br><span class="line"> &#125;  </span><br></pre></td></tr></table></figure></p>
 <p><strong>更快的方法是</strong></p>
 <p>文献2提到了比上述程序更快的求解平方根的非典型牛顿迭代法。介绍如下。</p>
@@ -449,6 +472,8 @@
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
+              <img class="site-author-image" itemprop="image" src="/headpic.png" alt="Yimitri">
+            
               <p class="site-author-name" itemprop="name">Yimitri</p>
               <p class="site-description motion-element" itemprop="description">深度学习 机器学习 网络安全 神经网络</p>
           </div>
@@ -483,6 +508,34 @@
 
           
 
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/newdimitri" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:Yimitrii@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://ws3.sinaimg.cn/large/005BYqpgly1g1jru8map2j30kw0r241d.jpg" target="_blank" title="Wechat">
+                      
+                        <i class="fa fa-fw fa-weixin"></i>Wechat</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/org/peddlepaddleqian-yan-gen-zong/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-mortar-board (alias)"></i>知乎</a>
+                  </span>
+                
+            </div>
           
 
           
@@ -528,7 +581,7 @@
 
 
 
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
 
 
 
@@ -627,6 +680,13 @@
 
   
   
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
 
   
   <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
