@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="本文包含两大部分：1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的 作者：张子豪 来源：人工智能头条 文章介绍了如何用对抗样本修改图片，误导神经网络指鹿为马；对 NIPS 2017 神经网络对抗攻防赛 3 项冠军清华团队的算法模型进行了解读。文章部分内容来自 2018 CNCC 中国计算机大会—人工智能与信息安全分会场报告。 2、NIPS2018：NIPS 2018">
+<meta property="og:type" content="article">
+<meta property="og:title" content="盘点 NeurIPS 两届神经网络对抗赛 (NIPS2017、NIPS2019）">
+<meta property="og:url" content="http://yoursite.com/2019/07/08/盘点 NeurIPS 两届神经网络对抗赛2017、2018/index.html">
+<meta property="og:site_name" content="国家二级薯条试吃员">
+<meta property="og:description" content="本文包含两大部分：1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的 作者：张子豪 来源：人工智能头条 文章介绍了如何用对抗样本修改图片，误导神经网络指鹿为马；对 NIPS 2017 神经网络对抗攻防赛 3 项冠军清华团队的算法模型进行了解读。文章部分内容来自 2018 CNCC 中国计算机大会—人工智能与信息安全分会场报告。 2、NIPS2018：NIPS 2018">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/AcPItyIPge.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/ALYHzgqMPV.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/DgoNFYsWtW.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/qA5rVtHod2.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/ADHMOeL3fa.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/5MggSpnH83.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/QkLxRNVrSQ.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/leFO4ikAVZ.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/SaHUhfillp.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/7f65qd6tsv.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/AZCxb3XLq7.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/z5ryyxYpfb.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/BAecDgQgeW.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/wsOin06Fb7.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/bY6knDCIeE.jpg?imageView2/2/w/1240/h/0">
+<meta property="og:updated_time" content="2019-07-09T03:44:04.522Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="盘点 NeurIPS 两届神经网络对抗赛 (NIPS2017、NIPS2019）">
+<meta name="twitter:description" content="本文包含两大部分：1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的 作者：张子豪 来源：人工智能头条 文章介绍了如何用对抗样本修改图片，误导神经网络指鹿为马；对 NIPS 2017 神经网络对抗攻防赛 3 项冠军清华团队的算法模型进行了解读。文章部分内容来自 2018 CNCC 中国计算机大会—人工智能与信息安全分会场报告。 2、NIPS2018：NIPS 2018">
+<meta name="twitter:image" content="http://bbs.cvmart.net/uploads/images/201811/21/3/AcPItyIPge.jpg?imageView2/2/w/1240/h/0">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/08/盘点 NeurIPS 两届神经网络对抗赛2017、2018/">
+
+
+
+
+
+  <title>盘点 NeurIPS 两届神经网络对抗赛 (NIPS2017、NIPS2019） | 国家二级薯条试吃员</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?b8223f071382d4239a383d450de56d81";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">国家二级薯条试吃员</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">没有我不敢收的红包</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+<script>
+    
+    window.onload = function(){
+        var path = 'https://malizhi.cn'; //这里要改成你博客的地址
+        var localhostItem = String(window.location).split(path)[1];
+        var LiNode = document.querySelectorAll('#menu > li > a')
+        
+        for(var i = 0; i< LiNode.length;i++){
+            var item = String(LiNode[i].href).split(path)[1];
+            if(item == localhostItem && item != undefined){
+                LiNode[i].setAttribute('style','border-bottom:1px solid black');
+            }
+        }
+    };
+
+</script>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/盘点 NeurIPS 两届神经网络对抗赛2017、2018/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yimitri">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/headpic.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="国家二级薯条试吃员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">盘点 NeurIPS 两届神经网络对抗赛 (NIPS2017、NIPS2019）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T12:23:48+08:00">
+                2019-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文包含两大部分：<br><strong>1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的</strong></p>
+<p>作者：张子豪</p>
+<p>来源：<a href="https://mp.weixin.qq.com/s/P2FjJNb-Qw9SBQiDP_r0Kw" target="_blank" rel="noopener">人工智能头条</a></p>
+<p>文章介绍了如何用对抗样本修改图片，误导神经网络指鹿为马；对 NIPS 2017 神经网络对抗攻防赛 3 项冠军清华团队的算法模型进行了解读。文章部分内容来自 2018 CNCC 中国计算机大会—人工智能与信息安全分会场报告。</p>
+<p><strong>2、NIPS2018：NIPS 2018对抗视觉挑战赛结果公布：CMU邢波团队包揽两项冠军</strong></p>
+<p>作者：Wieland Brendel</p>
+<p>来源：<a href="https://mp.weixin.qq.com/s/DYUsUvE3oLp1zHH02Z4rZA" target="_blank" rel="noopener">机器之心</a></p>
+<p>近日，NIPS 2018 对抗视觉挑战赛结果公布。CMU 邢波团队包揽两项冠军，另一项冠军则由来自加拿大的 LIVIA 团队斩获，清华 TSAIL 团队获得「无针对性攻击」的亚军。本文介绍了这些团队的方法大纲，不过具体细节将在 12 月 7 日 9:15–10:30 举办的 NIPS Competition 研讨会上揭晓。</p>
+<a id="more"></a>  
+<h1 id="1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的"><a href="#1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的" class="headerlink" title="1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的"></a>1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的</h1><p>文章介绍了如何用对抗样本修改图片，误导神经网络指鹿为马；对 NIPS 2017 神经网络对抗攻防赛 3 项冠军清华团队的算法模型进行了解读。文章部分内容来自 2018 CNCC 中国计算机大会—人工智能与信息安全分会场报告。</p>
+<p>TD;DR</p>
+<blockquote>
+<p>GAN 一点都不撸棒，简直不要太好骗：胖达变成猴，山误认为狗</p>
+<p>对抗样本不是仅在最后预测阶段产生误导，而是从特征提取过程开始就产生误导</p>
+<p>NIPS 2017 神经网络对抗攻防赛中，清华大学的学霸们采用了多种深度学习模型集合攻击的方案，训练出的攻击样本具备良好的普适性和可迁移性。</p>
+</blockquote>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/AcPItyIPge.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>胖虎和吴亦凡，边界是如此的模糊；王力宏和张学友，看上去竟如此的神似</p>
+<p>人脸识别、自动驾驶、刷脸支付、抓捕逃犯、美颜直播…人工智能与实体经济深度结合，彻底改变了我们的生活。神经网络和深度学习貌似强大无比，值得信赖。</p>
+<p>但是人工智能是最聪明的，却也是最笨的，其实只要略施小计就能误导最先进的深度学习模型指鹿为马。</p>
+<p><strong>大熊猫 = 长臂猿</strong></p>
+<p>早在2015年，“生成对抗神经网络 GAN 之父” Ian Goodfellow 在 ICLR 会议上展示了攻击神经网络欺骗成功的案例。</p>
+<p>在原版大熊猫图片中加入肉眼难以发现的干扰，生成对抗样本。就可以让 Google 训练的神经网络误认为它 99.3% 是长臂猿。<br><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/ALYHzgqMPV.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p><strong>阿尔卑斯山 = 狗</strong></p>
+<p>2017 NIPS 对抗样本攻防竞赛案例：阿尔卑斯山图片篡改后被神经网络误判为狗、河豚被误判为螃蟹。</p>
+<p>对抗样本不仅仅对图片和神经网络适用，对支持向量机、决策树等算法也同样有效。</p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/DgoNFYsWtW.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>那么，具体有哪些方法，可以把人工智能，变成人工智障呢？</p>
+<h2 id="人工智障：逃逸攻击，白盒-黑盒，对抗样本"><a href="#人工智障：逃逸攻击，白盒-黑盒，对抗样本" class="headerlink" title="人工智障：逃逸攻击，白盒/黑盒，对抗样本"></a>人工智障：逃逸攻击，白盒/黑盒，对抗样本</h2><p>逃逸攻击可分为白盒攻击和黑盒攻击。</p>
+<p><strong>白盒攻击</strong>是在已经获取机器学习模型内部的所有信息和参数上进行攻击，令损失函数最大，直接计算得到对抗样本.</p>
+<p><strong>黑盒攻击</strong>则是在神经网络结构为黑箱时，仅通过模型的输入和输出，逆推生成对抗样本。下图左图为白盒攻击（自攻自受），右图为黑盒攻击（用他山之石攻此山之玉）。<br><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/qA5rVtHod2.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>对机器学习模型的逃逸攻击，绕过深度学习的判别并生成欺骗结果，攻击者在原图上构造的修改被称为<strong>对抗样本</strong>。<br><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/ADHMOeL3fa.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>神经网络对抗样本生成与攻防是一个非常有（zhuang）趣（bi）且有前景的研究方向。</p>
+<p>2018年，Ian Goodfellow 再发大招，不仅欺骗了神经网络，还能欺骗人眼。</p>
+<p>视频演示：<a href="https://v.qq.com/x/page/n0638ta39r3.html" target="_blank" rel="noopener">https://v.qq.com/x/page/n0638ta39r3.html</a></p>
+<p>论文链接：<a href="https://arxiv.org/abs/1802.08195" target="_blank" rel="noopener">https://arxiv.org/abs/1802.08195</a></p>
+<p>文中提出了首个可以欺骗人类的对抗样本。下图左图为猫咪原图，经过对抗样本干扰之后生成右图，对于右图，神经网络和人眼都认为是狗。</p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/5MggSpnH83.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>下图中，绿色框为猫的原图。左上角显示了攻击的目标深度模型数量越多，生成的图像对人类来说越像狗。  左下角显示了针对 10 个模型进行攻击而生成的对抗样本，当 eps = 8 的时候，人类受试者已经把它认成狗了。</p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/QkLxRNVrSQ.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>除此之外，人工智能还面临模型推断攻击、拒绝服务攻击、传感器攻击等多种信息安全挑战。</p>
+<h2 id="对抗样本有多好骗？"><a href="#对抗样本有多好骗？" class="headerlink" title="对抗样本有多好骗？"></a>对抗样本有多好骗？</h2><p>对抗样本会在原图上增加肉眼很难发现的干扰，但依旧能看得出来和原图的区别，下图左图为对抗样本，右图为熊猫原图。<br><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/leFO4ikAVZ.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>对抗样本不是仅在最后预测阶段产生误导，而是从特征提取过程开始就产生误导.  下图展示了第147号神经元分别在正常深度学习模型和对抗样本中的关注区域。在正常模型中，第147号神经元重点关注小鸟的头部信息。在对抗样本中，第147号神经元则完全被误导了，关注的区域杂乱无章。   </p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/SaHUhfillp.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>同时也说明，<strong>对抗样本不是根据语义生成的</strong>，它并不智能。而且，正如接下来讲述的，对抗样本对图片预处理过程非常敏感，任何区域截图、放大缩小、更换模型都很容易让对抗样本失效。</p>
+<p>其实，如果你把那张经过攻击篡改之后的大熊猫图片稍微放大或缩小，或者直接截一部分图，然后放到其它公开的图像识别模型上运行（比如百度识图），识别结果依旧是大熊猫。  </p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/7f65qd6tsv.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>这意味着对抗样本仅对指定的图片和攻击模型生效，对诸如区域截图、放大缩小之类的预处理过程是非常敏感的。</p>
+<p>也就是说，如果还想欺骗更多其它的深度学习模型，就要在训练生成对抗样本时尽可能包含更多的已知深度学习模型。</p>
+<h2 id="NIPS-冠军是怎么做的"><a href="#NIPS-冠军是怎么做的" class="headerlink" title="NIPS 冠军是怎么做的"></a>NIPS 冠军是怎么做的</h2><p>2017 年，生成对抗神经网络（GAN）之父 Ian Goodfellow，牵头组织了 NIPS 的 Adversarial Attacks and Defences（神经网络对抗攻防竞赛）。</p>
+<p>清华大学博士生董胤蓬、廖方舟、庞天宇及指导老师朱军、胡晓林、李建民、苏航组成的团队在竞赛中的全部三个项目中得到冠军。</p>
+<p>清华大学团队正是采用了多种深度学习模型集合攻击的方案，通过对 Image.Net 网站上的三万张图片进行训练，提出七种攻击模型。</p>
+<p>集合攻击考虑了 Inception V3、ResNet、Inception ResNet V2 三种已知的深度学习模型，训练出的攻击样本具备良好的普适性和可迁移性。</p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/AZCxb3XLq7.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>下图展示了他们使用FGSM模型进行攻击的测试：<br><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/z5ryyxYpfb.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>横行为攻击模型名称，竖列为防守模型名称，表格中的数字表示对于每1000张攻击图片，防守模型成功防守的图片数目，数字越大，表示竖列模型防守越有效，数字越小，表示横行模型进攻越有效。</p>
+<p>红色表示用同一个模型进行攻防（白盒攻击）。可以看出：下面是个有序序列</p>
+<p>白盒攻击成功率远远大于黑盒成功率。如何提高黑盒攻击的可迁移性，实现跨模型的黑盒攻击，是一个重要问题。</p>
+<p>由 Adv-Incv3 竖列看出，经过对抗训练之后的防守模型非常强悍。甚至可以达到 94.1% 的防守成功率。</p>
+<p>因此，将对抗样本引入训练数据集进行对抗训练是有效的防守策略，相当于士兵平时训练的时候就采用真实战场条件，上了战场自然不怂。</p>
+<p>由 Ens4-Adv-Incv3 竖列看出，经过多个模型集合训练之后的防守模型非常强悍。 正所谓“用五岳他山之石攻此山之玉”、“曾经沧海难为水”，使用多个深度模型训练出的防守模型必然是集众家之长。</p>
+<p><strong>防御组：图像降噪策略</strong></p>
+<p>对抗训练（把真实战场作为训练场）：在训练模型的时候就加上对抗样本（对抗训练）。</p>
+<p>对抗样本随模型训练的过程在线生成。虽然很耗时，但训练出的模型鲁棒性很强</p>
+<p>改进的HGD降噪算法：像素层面上的去噪并不能真正去掉噪音，传统的像素去噪方法全都无效。</p>
+<p>采用基于CNN的改进HGD降噪算法，仅使用750张训练图片，大大节省训练时间，且模型可迁移性好。</p>
+<h2 id="未来可能的应用场景"><a href="#未来可能的应用场景" class="headerlink" title="未来可能的应用场景"></a>未来可能的应用场景</h2><p><strong>误导汽车的语音指令</strong></p>
+<p>这个方式已经被中国科学院大学教授陈恺实现了。通过对汽车音响播放的歌曲进行干扰编码，虽然人耳听起来仍然是原曲，实际上暗中通过微信的语音，发送了“Open the door”指令。</p>
+<p>本文作者张子豪提出另一种思路，使用树莓派微型电脑，发射FM调频广播播放干扰之后的歌曲，直接干扰汽车收音机。</p>
+<p>陈恺表示，已经尝试过该方式，决定干扰成功率的关键还是在于过滤外界噪音干扰。</p>
+<p><strong>直接破解本地 AI 模型</strong></p>
+<p>360智能安全研究院负责人李康认为，人工智能与信息安全的下一个热点：深度学习模型参数被窃取的风险和数据安全。</p>
+<p>随着边缘计算和智能移动终端时代的到来，在移动终端部署本地 AI 应用越来越广泛。从iPhone X的刷脸解锁，到华为、高通部署手机端的 AI 芯片。  </p>
+<p>在移动终端本地运行 AI 应用，可有效解决延迟、传输带宽、用户隐私泄露等问题，但同时也带来本地深度学习模型的数据安全问题。  </p>
+<p>经过简单的逆推，就可以破解很多本地的 AI 应用，甚至可以知道其中的 Caffe 模型的基本参数。  </p>
+<p>有些开发者会采用 AES 加密把模型封装起来，但殊不知在 AES 密钥也得保存在本地文件中。  </p>
+<p>有时甚至根据追踪 AI 应用对内存的访问情况，就可以判断出这个模型的神经网络结构。  </p>
+<p>所以 AI 开发者在向移动端和嵌入式设备中部署 AI 应用时，一定要事先请教安全团队，确保模型数据安全。</p>
+<h2 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h2><p>NIPS 2017 神经网络对抗攻防赛介绍：</p>
+<p><strong>比赛分组规则</strong></p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/BAecDgQgeW.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>比赛为三组选手互相进行攻防</p>
+<ul>
+<li>Targed Attack 组：组委会给 5000 张原图和每张图对应的目标误导结果数据集，制定要求指鹿为马</li>
+<li>Non-ratgeted Attack 组：只要不认不出是鹿就行</li>
+<li>Defense 组：正确识别已经被其他参赛组对抗样本攻击的图片</li>
+</ul>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/wsOin06Fb7.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p><strong>攻击组：对抗样本生成策略</strong></p>
+<p><strong>集合攻击</strong>（他山之石可以攻玉）：攻击多个已知深度学习模型的集合，而不是逐个击破。</p>
+<p>比方说，把ResNet、VGG、Inception三个模型视作统一的大模型一起攻击，再用训练好的模型攻击AlexNet，成功率就会大大提高。</p>
+<p>可以在模型底层、预测值、损失函数三个层面进行多个模型的集合攻击。</p>
+<p>采用这个方法，可以大大提高对抗样本攻击的普适性和可迁移性。</p>
+<p><strong>改进的FGSM模型：</strong>多步迭代、带目标、引入动量，大大提高对抗样本的可迁移性。</p>
+<h1 id="2、NIPS2018：NIPS-2018对抗视觉挑战赛结果公布：CMU邢波团队包揽两项冠军"><a href="#2、NIPS2018：NIPS-2018对抗视觉挑战赛结果公布：CMU邢波团队包揽两项冠军" class="headerlink" title="2、NIPS2018：NIPS 2018对抗视觉挑战赛结果公布：CMU邢波团队包揽两项冠军"></a>2、NIPS2018：NIPS 2018对抗视觉挑战赛结果公布：CMU邢波团队包揽两项冠军</h1><p>近日，NIPS 2018 对抗视觉挑战赛结果公布。本次比赛共分为三个单元：防御、无针对性攻击和有针对性攻击。CMU 邢波团队包揽两项冠军，另一项冠军则由来自加拿大的 LIVIA 团队斩获，清华 TSAIL 团队获得「无针对性攻击」的亚军。本文介绍了这些团队的方法大纲，不过具体细节将在 12 月 7 日 9:15–10:30 举办的 NIPS Competition 研讨会上揭晓。</p>
+<p>NIPS 2018 对抗视觉挑战赛地址：<a href="https://www.crowdai.org/challenges/nips-2018-adversarial-vision-challenge-robust-model-track" target="_blank" rel="noopener">https://www.crowdai.org/challenges/nips-2018-adversarial-vision-challenge-robust-model-track</a></p>
+<p>近日，NIPS 2018 对抗视觉挑战赛（NIPS Adversarial Vision Challenge 2018）结果公布，超过 400 个参赛团队提交了 3000 多个模型和攻击方法。今年的比赛聚焦于真实世界的场景，攻击对模型的访问量很小（每个样本至多 1000 个）。模型仅返回它们给出的最终结果而不是梯度或置信度分数。这种做法模拟了部署机器学习系统面临的典型威胁场景，有望推进基于决策的高效攻击方法的发展，也有利于构建更加鲁棒的模型。</p>
+<p><img src="http://bbs.cvmart.net/uploads/images/201811/21/3/bY6knDCIeE.jpg?imageView2/2/w/1240/h/0" alt="file"></p>
+<p>CrowdAI 平台上已完成的 model track。</p>
+<p>所有获奖者的表现至少比标准基线（如从普通模型或普通边界攻击（Boundary attack）迁移）好一个数量级（根据 L2 扰动的中值大小计算)。我们向每个比赛（防御、无针对性攻击、针对性攻击）的前三名要了他们方法的大纲。获奖者将在 12 月 7 日 9:15–10:30 举办的 NIPS Competition 研讨会上展示其方法。</p>
+<p>攻击赛道获奖者的共同主题是边界攻击的低频版本以及不同防御方法组合起来作为替代模型。在 model track 中，获奖者使用了一种新的鲁棒模型方法（细节恐怕要等到研讨会才能知晓）以及一种用于对抗训练的基于梯度的新迭代 L2 攻击。在之后的几周，我们将再次发帖，公布更多结果细节，包括针对防御模型生成的对抗样本的可视化。获奖团队将在几周后公布。</p>
+<h2 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h2><ul>
+<li>第一名：Petuum-CMU 团队 (排行榜上代号为「91YXLT」)</li>
+<li>作者：Yaodong Yu_, Hongyang Zhang_, Susu Xu, Hongbao Zhang, Pengtao Xie 和 Eric P. Xing (*表示同等贡献)，分别来自 Petuum Inc 公司、卡内基梅隆大学、弗吉尼亚大学。</li>
+<li><p>为了学习对对抗样本鲁棒的深度网络，作者分析了对对抗样本鲁棒的模型的泛化性能。基于其分析，作者提出了新的公式来学习具有泛化和鲁棒性保证的鲁棒模型。</p>
+</li>
+<li><p>第二名：Wilson 团队（目前尚未收到该团队的回复）</p>
+</li>
+<li><p>作者：Xuefei Ning, Wenshuo Li, Yu Wang，来自清华大学</p>
+</li>
+<li><p>第三名：LIVIA 团队（排行榜上代号为「Jerome R」）</p>
+</li>
+<li>作者：Jérôme Rony &amp; Luiz Gustavo Hafemann，来自加拿大蒙特利尔魁北克高等技术学院（ETS Montreal，Canada)</li>
+<li>作者用提出的基于梯度的新迭代 L2 攻击（解耦方向和范数——Decoupled Direction and Norm，DDN）训练了一个鲁棒的模型，这种攻击速度够快，可以在训练中使用。在每个训练步骤中，作者找到一个接近决策边界的对抗样本（使用 DDN），并最小化这个例子的交叉熵。模型架构没有变化，也没有对推理时间产生任何影响。</li>
+</ul>
+<h2 id="无针对性攻击"><a href="#无针对性攻击" class="headerlink" title="无针对性攻击"></a>无针对性攻击</h2><ul>
+<li>第一名：LIVIA 团队（排行榜上代号为「Jerome R」）</li>
+<li>作者：Jérôme Rony &amp; Luiz Gustavo Hafemann，来自加拿大蒙特利尔魁北克高等技术学院</li>
+<li><p>该攻击方法基于众多代理模型（包括用作者提出的新攻击方法——DDN 训练的鲁棒模型）。对于每个模型，作者选择两个方向来攻击：原始类别的交叉熵损失梯度，以及通过运行 DDN 攻击给出的方向。对于每个方向，作者对范数进行二进制搜索，以找到决策边界。作者采取最好的攻击，并通过《Decision-Based Adversarial Attacks: Reliable Attacks Against Black-Box Machine Learning Models》中的边界攻击（boundary attack）方法来改进它。</p>
+</li>
+<li><p>第二名：TSAIL 团队 (排行榜上代号为「csy530216」)</p>
+</li>
+<li>作者：Shuyu Cheng &amp; Yinpeng Dong</li>
+<li><p>作者使用一种启发式搜索算法来改进对抗样本，这与边界攻击方法类似。BIM 攻击使用了《Adversarial Logit Pairing》中的基线来迁移，从而找到了起点。在每次迭代中，随机扰动是从具有对角协方差矩阵的高斯分布中采样的，该矩阵由过去的成功试验进行更新以模拟搜索方向。作者将扰动限制在 64_64_3 图像的中心 40_40_3 区域内。其首先生成一个 10_10_3 的噪声，然后使用双线性插值将其调整到 40_40_3。限制搜索空间让算法变得更高效。</p>
+</li>
+<li><p>第三名：Petuum-CMU 团队 (排行榜上代号为「91YXLT」)</p>
+</li>
+<li>作者：Yaodong Yu_, Hongyang Zhang_, Susu Xu, Hongbao Zhang, Pengtao Xie 和 Eric P. Xing (*表示同等贡献)，分别来自 Petuum Inc 公司、卡内基梅隆大学、弗吉尼亚大学。</li>
+<li>作者在来自 Foolbox 的几个距离测量度量下集成了不同的鲁棒模型和不同的对抗攻击方法，以生成对抗扰动。此外，他们选择了在不同距离度量下攻击鲁棒模型时最小化最大距离的最佳攻击方法。</li>
+</ul>
+<h2 id="有针对性攻击"><a href="#有针对性攻击" class="headerlink" title="有针对性攻击"></a>有针对性攻击</h2><ul>
+<li>第一名：Petuum-CMU 团队（排行榜上代号为「91YXLT」）</li>
+<li>作者：Yaodong Yu_, Hongyang Zhang_, Susu Xu, Hongbao Zhang, Pengtao Xie 和 Eric P. Xing (*表示同等贡献)，分别来自 Petuum Inc 公司、卡内基梅隆大学、弗吉尼亚大学。</li>
+<li><p>作者根据 Foolbox 集成了不同的鲁棒模型和不同的对抗样本方法来生成对抗扰动。他们发现集成方法使得目标攻击模型对于各种鲁棒模型变得更加有效。</p>
+</li>
+<li><p>第二名：fortiss 团队（排行榜上代号为「ttbrunner」）</p>
+</li>
+<li>作者：Thomas Brunner &amp; Frederik Diehl, 来自德国 Fortiss GmbH 研究所</li>
+<li><p>该攻击方法与边界攻击类似，但不是从随机正态分布中采样。此外，作者采用迁移良好且不易被防御者过滤的低频模式。作者还使用替代模型的投影梯度作为采样的先验。通过这种方式，他们将两者（PGD 和边界攻击）的优点结合成一种灵活又采样高效的攻击方法。</p>
+</li>
+<li><p>第三名：LIVIA 团队（排行榜上代号为「Jerome R」）</p>
+</li>
+<li>作者：Jérôme Rony &amp; Luiz Gustavo Hafemann，来自加拿大蒙特利尔魁北克高等技术学院</li>
+<li>该攻击方法基于众多代理模型（包括用 DNN 训练的鲁棒模型）。对于每个模型，作者选择两个方向来攻击：目标类别的交叉熵损失梯度，以及通过运行 DDN 攻击给出的方向。对于每个方向，作者对范数进行二进制搜索，以找到决策边界。作者采取最好的攻击，并通过边界攻击方法来改进它。</li>
+</ul>
+<p>更多详情请关注原文链接：<a href="https://medium.com/bethgelab/results-of-the-nips-adversarial-vision-challenge-2018-e1e21b690149" target="_blank" rel="noopener">https://medium.com/bethgelab/results-of-the-nips-adversarial-vision-challenge-2018-e1e21b690149</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/22/nlp中的Attention注意力机制+Transformer详解/" rel="next" title="nlp中的Attention注意力机制+Transformer详解">
+                <i class="fa fa-chevron-left"></i> nlp中的Attention注意力机制+Transformer详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/headpic.png" alt="Yimitri">
+            
+              <p class="site-author-name" itemprop="name">Yimitri</p>
+              <p class="site-description motion-element" itemprop="description">深度学习 机器学习 网络安全 神经网络</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/newdimitri" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:Yimitrii@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://ws3.sinaimg.cn/large/005BYqpgly1g1jru8map2j30kw0r241d.jpg" target="_blank" title="Wechat">
+                      
+                        <i class="fa fa-fw fa-weixin"></i>Wechat</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="https://www.zhihu.com/org/peddlepaddleqian-yan-gen-zong/activities" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-mortar-board (alias)"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的"><span class="nav-number">1.</span> <span class="nav-text">1、NIPS2017：神经网络太好骗？清华团队如何做到打NIPS攻防赛得3冠军的</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#人工智障：逃逸攻击，白盒-黑盒，对抗样本"><span class="nav-number">1.1.</span> <span class="nav-text">人工智障：逃逸攻击，白盒/黑盒，对抗样本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对抗样本有多好骗？"><span class="nav-number">1.2.</span> <span class="nav-text">对抗样本有多好骗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NIPS-冠军是怎么做的"><span class="nav-number">1.3.</span> <span class="nav-text">NIPS 冠军是怎么做的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#未来可能的应用场景"><span class="nav-number">1.4.</span> <span class="nav-text">未来可能的应用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#延伸阅读"><span class="nav-number">1.5.</span> <span class="nav-text">延伸阅读</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2、NIPS2018：NIPS-2018对抗视觉挑战赛结果公布：CMU邢波团队包揽两项冠军"><span class="nav-number">2.</span> <span class="nav-text">2、NIPS2018：NIPS 2018对抗视觉挑战赛结果公布：CMU邢波团队包揽两项冠军</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#防御"><span class="nav-number">2.1.</span> <span class="nav-text">防御</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无针对性攻击"><span class="nav-number">2.2.</span> <span class="nav-text">无针对性攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#有针对性攻击"><span class="nav-number">2.3.</span> <span class="nav-text">有针对性攻击</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yimitri</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+<!-- 新增访客统计代码 -->
+
+<div class="busuanzi-count">
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      访问用户： <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+    <div class="powered-by"></div>
+    <span class="site-uv">
+      <i class="fa fa-eye"></i>
+      访问次数： <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+    <!-- 博客字数统计 -->
+    <span class="site-pv">
+      <i class="fa fa-pencil"></i>
+      博客全站共： <span class="post-count"></span> 字
+    </span>
+</div>
+<!-- 新增访客统计代码 END-->
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
