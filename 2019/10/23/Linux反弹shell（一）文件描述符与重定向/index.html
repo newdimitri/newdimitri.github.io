@@ -88,17 +88,14 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-42b270876953801a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-2226eb0bf1bc401f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-2cca3484305d6b7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-d34e7ebf953430a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-a5a7ebf73f3a10b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-765357c2f0399e28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-68c48f0911232468.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-cf42c9df437dd10c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-c2b066459c2d34f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-7df46448185877e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-a6eaa6255a84dc83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-ac67b0ab25efe489.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-10-23T10:27:37.673Z">
+<meta property="og:updated_time" content="2019-10-23T11:56:06.138Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux反弹shell（一）文件描述符与重定向">
 <meta name="twitter:description" content="0X00 前言由于在反弹shell的过程中有一些精简的语句一直没有弄明白，今天特意写文章总结这里面最难的文件描述符和重定向的部分。 0X01 文件描述符 linux文件描述符：可以理解为linux跟踪打开文件，而分配的一个数字，这个数字有点类似c语言操作文件时候的句柄，通过句柄就可以实现文件的读写操作。  当Linux启动的时候会默认打开三个文件描述符，分别是： 标准输入standard inpu">
@@ -377,20 +374,14 @@
 <p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d749a4e2-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-42b270876953801a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d7566fc4-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-2226eb0bf1bc401f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <p>解释: 解析器解析到 “&lt;” 以后会先处理重定向，将标准输入重定向到file，之后cat再从标准输入读取指令的时候，由于标准输入已经重定向到了file ，于是cat就从file中读取指令了。(<strong>有没有觉得这个其实就是C语言中的指针或者文件句柄，就是将0这个指针指向了不同的地址，自然有不同的输入</strong>)</p>
-<p>图示:</p>
-<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d763ff72-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-2cca3484305d6b7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <h3 id="2-输出重定向"><a href="#2-输出重定向" class="headerlink" title="2.输出重定向"></a><strong>2.输出重定向</strong></h3><p>格式： [n]&gt; word</p>
 <p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d774b3bc-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-d34e7ebf953430a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d77f7b1c-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-a5a7ebf73f3a10b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <p>说明： 将文件描述符 n 重定向到word 指代的文件（以写的方式打开），如果n 省略则默认就是 1（标准输出）</p>
-<p>图示：</p>
-<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d79014c2-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-765357c2f0399e28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <h3 id="3-标准输出与标准错误输出重定向"><a href="#3-标准输出与标准错误输出重定向" class="headerlink" title="3.标准输出与标准错误输出重定向"></a><strong>3.标准输出与标准错误输出重定向</strong></h3><p>格式： &amp;&gt; word &gt;&amp; word</p>
 <p>说明:将标准输出与标准错误输出都定向到word代表的文件（以写的方式打开），两种格式意义完全相同，这种格式完全等价于 &gt; word 2&gt;&amp;1 (2&gt;&amp;1 是将标准错误输出复制到标准输出，&amp;是为了区分文件1和文件描述符1的，详细的介绍后面会有)</p>
 <p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d79df60a-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-68c48f0911232468.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <p>解释：我们首先执行了一个错误的命令，可以看到错误提示被写入文件（正常情况下是会直接输出的），我们又执行了一条正确的指令，发现结果也输入到了文件，说明正确错误消息都能输出到文件。</p>
-<p>图示：</p>
-<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7abf9e4-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-cf42c9df437dd10c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <h3 id="4-文件描述符的复制"><a href="#4-文件描述符的复制" class="headerlink" title="4.文件描述符的复制"></a><strong>4.文件描述符的复制</strong></h3><p>格式： [n]&lt;&amp;[m] / [n]&gt;&amp;[m] <strong>(这里所有字符之间不要有空格)</strong></p>
 <p>说明：</p>
 <p>1）这里两个<strong>都是将文件描述符 n 复制到 m</strong> ，两者的区别是，前者是以只读的形式打开，后者是以写的形式打开</p>
