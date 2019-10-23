@@ -95,7 +95,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-7df46448185877e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-a6eaa6255a84dc83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-ac67b0ab25efe489.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-10-23T11:56:06.138Z">
+<meta property="og:updated_time" content="2019-10-23T12:02:27.644Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux反弹shell（一）文件描述符与重定向">
 <meta name="twitter:description" content="0X00 前言由于在反弹shell的过程中有一些精简的语句一直没有弄明白，今天特意写文章总结这里面最难的文件描述符和重定向的部分。 0X01 文件描述符 linux文件描述符：可以理解为linux跟踪打开文件，而分配的一个数字，这个数字有点类似c语言操作文件时候的句柄，通过句柄就可以实现文件的读写操作。  当Linux启动的时候会默认打开三个文件描述符，分别是： 标准输入standard inpu">
@@ -395,6 +395,11 @@
 <p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7bcbb94-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-c2b066459c2d34f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
 <p><strong>2.解析器再向后解析到 “&gt;”</strong></p>
 <p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7cdb7be-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-7df46448185877e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p><strong>每次都写”&gt;log 2&gt;&amp;1”太麻烦，能简写吗？</strong><br>有以下两种简写方式</p>
+<p>&amp;&gt;log</p>
+<blockquote>
+<p>&amp;log<br>&amp;&gt;和&gt;&amp;语义上是没有任何区别的</p>
+</blockquote>
 <h3 id="5-exec-绑定重定向"><a href="#5-exec-绑定重定向" class="headerlink" title="5.exec 绑定重定向"></a><strong>5.exec 绑定重定向</strong></h3><p>格式：exec [n] &lt;/&gt; file/[n]</p>
 <p>上面的输入输出重定向将输入和输出绑定文件或者设备以后只对当前的那条指令有效，如果需要接下来的指令都支持的话就需要使用 exec 指令</p>
 <h3 id="重点：-2"><a href="#重点：-2" class="headerlink" title="重点："></a><strong>重点：</strong></h3><p>格式： [n]&lt;&gt;word</p>
