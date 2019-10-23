@@ -776,6 +776,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/22/Linux反弹shell（一）文件描述符与重定向/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Yimitri">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/headpic.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="国家二级薯条试吃员">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/22/Linux反弹shell（一）文件描述符与重定向/" itemprop="url">nlp中的Attention注意力机制+Transformer详解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-22T19:45:08+08:00">
+                2019-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="0X00-前言"><a href="#0X00-前言" class="headerlink" title="0X00 前言"></a><strong>0X00 前言</strong></h2><p>由于在反弹shell的过程中有一些精简的语句一直没有弄明白，今天特意写文章总结这里面最难的文件描述符和重定向的部分。</p>
+<h2 id="0X01-文件描述符"><a href="#0X01-文件描述符" class="headerlink" title="0X01 文件描述符"></a><strong>0X01 文件描述符</strong></h2><blockquote>
+<p><strong>linux文件描述符</strong>：可以理解为linux跟踪打开文件，而分配的一个数字，这个数字有点类似c语言操作文件时候的句柄，通过句柄就可以实现文件的读写操作。</p>
+</blockquote>
+<p>当Linux启动的时候会默认打开三个文件描述符，分别是：</p>
+<p>标准输入standard input ：0 （默认设备键盘）<br>标准输出standard output ：1（默认设备显示器）<br>错误输出：error output ：2（默认设备显示器）</p>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a><strong>注意：</strong></h3><p>（1）以后再打开文件，描述符可以依次增加<br>（2）一条shell命令，都会继承其父进程的文件描述符，因此所有的shell命令，都会默认有三个文件描述符。</p>
+<p><strong>文件所有输入输出都是由该进程所有打开的文件描述符控制的。（Linux一切皆文件，就连键盘显示器设备都是文件，因此他们的输入输出也是由文件描述符控制）</strong></p>
+<p>一条命令执行以前先会按照默认的情况进行绑定（也就是上面所说的 0,1,2），<font color="#dd0000">如果我们有时候需要让输出不显示在显示器上，而是输出到文件或者其他设备，那我们就需要重定向。</font><br> </p>
+<h2 id="0X02-重定向"><a href="#0X02-重定向" class="headerlink" title="0X02 重定向"></a><strong>0X02 重定向</strong></h2><p>重定向主要分为两种(其他复杂的都是从这两种衍生而来的)：</p>
+<p>（1）输入重定向 &lt; &lt;&lt;<br>（2）输出重定向 &gt; &gt;&gt;</p>
+<h3 id="重点："><a href="#重点：" class="headerlink" title="重点："></a><strong>重点：</strong></h3><p>1.bash 在执行一条指令的时候，首先会检查命令中存不存在重定向的符号，如果存在那么首先将文件描述符重定向（之前说过了，输入输出操作都是依赖文件描述符实现的，重定向输入输出本质上就是重定向文件描述符），然后在把重定向去掉，执行指令</p>
+<p>2.如果指令中存在多个重定向，那么不要随便改变顺序，因为重定向是从左向右解析的，改变顺序可能会带来完全不同的结果（这一点我们后面会展示）</p>
+<p>3.&lt; 是对标准输入 0 重定向 ，&gt; 是对标准输出 1 重定向</p>
+<p><strong>4.再强调一下，重定向就是针对文件描述符的操作</strong></p>
+<h3 id="1-输入重定向"><a href="#1-输入重定向" class="headerlink" title="1.输入重定向"></a><strong>1.输入重定向</strong></h3><p>格式： [n]&lt; word <strong>（注意[n]与&lt;之间没有空格）</strong></p>
+<p>说明：将文件描述符 n 重定向到 word 指代的文件（以只读方式打开）,如果n省略就是0（标准输入）</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d749a4e2-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-42b270876953801a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d7566fc4-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-2226eb0bf1bc401f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p>解释: 解析器解析到 “&lt;” 以后会先处理重定向，将标准输入重定向到file，之后cat再从标准输入读取指令的时候，由于标准输入已经重定向到了file ，于是cat就从file中读取指令了。(<strong>有没有觉得这个其实就是C语言中的指针或者文件句柄，就是将0这个指针指向了不同的地址，自然有不同的输入</strong>)</p>
+<p>图示:</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d763ff72-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-2cca3484305d6b7e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<h3 id="2-输出重定向"><a href="#2-输出重定向" class="headerlink" title="2.输出重定向"></a><strong>2.输出重定向</strong></h3><p>格式： [n]&gt; word</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173621-d774b3bc-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-d34e7ebf953430a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d77f7b1c-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-a5a7ebf73f3a10b7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p>说明： 将文件描述符 n 重定向到word 指代的文件（以写的方式打开），如果n 省略则默认就是 1（标准输出）</p>
+<p>图示：</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d79014c2-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-765357c2f0399e28.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<h3 id="3-标准输出与标准错误输出重定向"><a href="#3-标准输出与标准错误输出重定向" class="headerlink" title="3.标准输出与标准错误输出重定向"></a><strong>3.标准输出与标准错误输出重定向</strong></h3><p>格式： &amp;&gt; word &gt;&amp; word</p>
+<p>说明:将标准输出与标准错误输出都定向到word代表的文件（以写的方式打开），两种格式意义完全相同，这种格式完全等价于 &gt; word 2&gt;&amp;1 (2&gt;&amp;1 是将标准错误输出复制到标准输出，&amp;是为了区分文件1和文件描述符1的，详细的介绍后面会有)</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d79df60a-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-68c48f0911232468.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p>解释：我们首先执行了一个错误的命令，可以看到错误提示被写入文件（正常情况下是会直接输出的），我们又执行了一条正确的指令，发现结果也输入到了文件，说明正确错误消息都能输出到文件。</p>
+<p>图示：</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7abf9e4-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-cf42c9df437dd10c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<h3 id="4-文件描述符的复制"><a href="#4-文件描述符的复制" class="headerlink" title="4.文件描述符的复制"></a><strong>4.文件描述符的复制</strong></h3><p>格式： [n]&lt;&amp;[m] / [n]&gt;&amp;[m] <strong>(这里所有字符之间不要有空格)</strong></p>
+<p>说明：</p>
+<p>1）这里两个<strong>都是将文件描述符 n 复制到 m</strong> ，两者的区别是，前者是以只读的形式打开，后者是以写的形式打开</p>
+<p><strong>因此 0&lt;&amp;1 和 0&gt;&amp;1 是完全等价的（读/写方式打开对其没有任何影响）</strong></p>
+<p>2）这里的&amp; 目的是为了区分数字名字的文件和文件描述符，如果没有&amp; 系统会认为是将文件描述符重定向到了一个数字作为文件名的文件，而不是一个文件描述符</p>
+<p>这里就可以用上面的例子作为演示，将错误和正确的输出都输入到文件中</p>
+<h3 id="重点：-1"><a href="#重点：-1" class="headerlink" title="重点："></a><strong>重点：</strong></h3><p>之前我们说过，重定向符号的顺序不能随便换，因为系统是从左到右执行的，我们下面就举一个例子</p>
+<p>(1)cmd &gt; file 2&gt;&amp;1<br>(2)cmd 2&gt;&amp;1 &gt;file</p>
+<p>与第一条指令类似的指令在上面我已经介绍过了，我们现在就来看看第二条指令的执行过程</p>
+<p><strong>1.首先解析器解析到 2&gt;&amp;1</strong></p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7bcbb94-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-c2b066459c2d34f8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p><strong>2.解析器再向后解析到 “&gt;”</strong></p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7cdb7be-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-7df46448185877e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<h3 id="5-exec-绑定重定向"><a href="#5-exec-绑定重定向" class="headerlink" title="5.exec 绑定重定向"></a><strong>5.exec 绑定重定向</strong></h3><p>格式：exec [n] &lt;/&gt; file/[n]</p>
+<p>上面的输入输出重定向将输入和输出绑定文件或者设备以后只对当前的那条指令有效，如果需要接下来的指令都支持的话就需要使用 exec 指令</p>
+<h3 id="重点：-2"><a href="#重点：-2" class="headerlink" title="重点："></a><strong>重点：</strong></h3><p>格式： [n]&lt;&gt;word</p>
+<p>说明：以读写方式打开word指代的文件，并将n重定向到该文件。如果n不指定的话，默认为标准输入。</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7da9894-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-a6eaa6255a84dc83.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20180810173622-d7e99074-9c80-1.png" target="_blank" rel="noopener"><img src="https://upload-images.jianshu.io/upload_images/4463968-ac67b0ab25efe489.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></a> </p>
+<h2 id="0X03-总结"><a href="#0X03-总结" class="headerlink" title="0X03 总结"></a><strong>0X03 总结</strong></h2><p>文件描述符和重定向的作用巨大，很好的体现出了Linux中一切皆文件的特性，在反弹shell建立交互通道的过程中也起到了至关重要的作用。</p>
+<p>个人博客： <a href="http://www.k0rz3n.com/" target="_blank" rel="noopener">http://www.k0rz3n.com</a></p>
+<h2 id="0X04-参考链接"><a href="#0X04-参考链接" class="headerlink" title="0X04 参考链接"></a><strong>0X04 参考链接</strong></h2><p><a href="https://blog.csdn.net/ccwwff/article/details/48519119" target="_blank" rel="noopener">https://blog.csdn.net/ccwwff/article/details/48519119</a><br><a href="http://www.cnblogs.com/chengmo/archive/2010/10/20/1855805.html" target="_blank" rel="noopener">http://www.cnblogs.com/chengmo/archive/2010/10/20/1855805.html</a><br><a href="http://www.178linux.com/54471" target="_blank" rel="noopener">http://www.178linux.com/54471</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/13/啥是Apache Flink！/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1544,133 +1719,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/23/图解Transformer/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Yimitri">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/headpic.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="国家二级薯条试吃员">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/03/23/图解Transformer/" itemprop="url">图解Transformer</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-23T22:15:08+08:00">
-                2019-03-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><pre><code> Attention这种机制最开始应用于机器翻译的任务中，并且取得了巨大的成就，因而在最近的深度学习模型中受到了大量的关注。在在这个基础上，我们提出一种完全基于Attention机制来加速深度学习训练过程的算法模型-Transformer。事实证明Transformer结构在特定任务上已经优于了谷歌的神经网络机器翻译模型。但是，Transformer最大的优势在于其在并行化处理上做出的贡献。谷歌也在利用Transformer的并行化方式来营销自己的云TPU。所以，现在让我们一步一步剖析Transformer的神秘面纱，让我看看他是怎么一步一步训练的。
-
-Transformer在Goole的一篇论文[Attention is All You Need](https://arxiv.org/abs/1706.03762)被提出，为了方便实现调用Transformer Google还开源了一个第三方库，基于TensorFlow的[Tensor2Tensor](https://github.com/tensorflow/tensor2tensor)，一个NLP的社区研究者贡献了一个Torch版本的支持：[guide annotating the paper with PyTorch implementation](http://nlp.seas.harvard.edu/2018/04/03/attention.html)。这里，我想用一些方便理解的方式来一步一步解释Transformer的训练过程，这样即便你没有很深的深度学习知识你也能大概明白其中的原理。
-</code></pre>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2019/03/23/图解Transformer/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1723,7 +1771,7 @@ Transformer在Goole的一篇论文[Attention is All You Need](https://arxiv.org/
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
