@@ -277,7 +277,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/23/BERT大火却不懂Transformer？读这一篇就够了/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/03/23/图解Transformer/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Yimitri">
@@ -296,7 +296,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2019/03/23/BERT大火却不懂Transformer？读这一篇就够了/" itemprop="url">BERT大火却不懂Transformer？读这一篇就够了</a></h1>
+                <a class="post-title-link" href="/2019/03/23/图解Transformer/" itemprop="url">图解Transformer</a></h1>
         
 
         <div class="post-meta">
@@ -347,11 +347,13 @@
 
       
         
-          <p>大数据文摘与百度NLP联合出品</p>
-<p>前一段时间谷歌推出的BERT模型在11项NLP任务中夺得STOA结果，引爆了整个NLP界。而BERT取得成功的一个关键因素是Transformer的强大作用。谷歌的Transformer模型最早是用于机器翻译任务，当时达到了STOA效果。Transformer改进了RNN最被人诟病的训练慢的缺点，利用self-attention机制实现快速并行。并且Transformer可以增加到非常深的深度，充分发掘DNN模型的特性，提升模型准确率。在本文中，我们将研究Transformer模型，把它掰开揉碎，理解它的工作原理。<br></p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><pre><code> Attention这种机制最开始应用于机器翻译的任务中，并且取得了巨大的成就，因而在最近的深度学习模型中受到了大量的关注。在在这个基础上，我们提出一种完全基于Attention机制来加速深度学习训练过程的算法模型-Transformer。事实证明Transformer结构在特定任务上已经优于了谷歌的神经网络机器翻译模型。但是，Transformer最大的优势在于其在并行化处理上做出的贡献。谷歌也在利用Transformer的并行化方式来营销自己的云TPU。所以，现在让我们一步一步剖析Transformer的神秘面纱，让我看看他是怎么一步一步训练的。
+
+Transformer在Goole的一篇论文[Attention is All You Need](https://arxiv.org/abs/1706.03762)被提出，为了方便实现调用Transformer Google还开源了一个第三方库，基于TensorFlow的[Tensor2Tensor](https://github.com/tensorflow/tensor2tensor)，一个NLP的社区研究者贡献了一个Torch版本的支持：[guide annotating the paper with PyTorch implementation](http://nlp.seas.harvard.edu/2018/04/03/attention.html)。这里，我想用一些方便理解的方式来一步一步解释Transformer的训练过程，这样即便你没有很深的深度学习知识你也能大概明白其中的原理。
+</code></pre>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2019/03/23/BERT大火却不懂Transformer？读这一篇就够了/#more" rel="contents">
+            <a class="btn" href="/2019/03/23/图解Transformer/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
