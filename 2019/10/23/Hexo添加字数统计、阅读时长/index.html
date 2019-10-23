@@ -88,7 +88,7 @@
 <meta property="og:description" content="统计插件配置NexT 主题默认已经集成了文章【字数统计】、【阅读时长】统计功能，如果我们需要使用，只需要在主题配置文件 _config.yml 中打开 wordcount 统计功能即可。如下所示： 12345678# Post wordcount display settings# Dependencies: https://github.com/willin/hexo-wordcountpost">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-37c9061110bd444a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-10-23T14:54:03.027Z">
+<meta property="og:updated_time" content="2019-10-23T14:57:30.219Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo添加字数统计、阅读时长">
 <meta name="twitter:description" content="统计插件配置NexT 主题默认已经集成了文章【字数统计】、【阅读时长】统计功能，如果我们需要使用，只需要在主题配置文件 _config.yml 中打开 wordcount 统计功能即可。如下所示： 12345678# Post wordcount display settings# Dependencies: https://github.com/willin/hexo-wordcountpost">
@@ -388,7 +388,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  406字
+                  490字
                 </span>
               
 
@@ -404,7 +404,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1分钟
+                  2分钟
                 </span>
               
             </div>
@@ -444,6 +444,7 @@
 <p>同理，我们修改【阅读时长】，修改后如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span title=<span class="string">"&#123;&#123; __('post.min2read') &#125;&#125;"</span>&gt;</span><br><span class="line">    &#123;&#123; min2read(post.content) &#125;&#125; 分钟</span><br><span class="line">&lt;<span class="regexp">/span&gt;</span></span><br></pre></td></tr></table></figure>
 <p>修改完成后，重新执行启动服务预览就可以了。修改后，效果如下图所示：<br><img src="https://upload-images.jianshu.io/upload_images/4463968-37c9061110bd444a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image.png"></p>
+<p>备注： 不蒜子页面PV统计插件，因为七牛云到期，人家耍赖不给他续域名，导致JS文件地址更换没更换为：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;script <span class="keyword">async</span> src=<span class="string">"//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"</span>&gt;&lt;/script&gt;</span><br><span class="line">&lt;span id=<span class="string">"busuanzi_container_site_pv"</span>&gt;本站总访问量&lt;span id=<span class="string">"busuanzi_value_site_pv"</span>&gt;&lt;/span&gt;次&lt;<span class="regexp">/span&gt;</span></span><br></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -474,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/10/23/Linux 反弹shell（二）反弹shell的本质/" rel="next" title="Linux 反弹shell（二）反弹shell的本质">
-                <i class="fa fa-chevron-left"></i> Linux 反弹shell（二）反弹shell的本质
+              <a href="/2019/10/23/Linux反弹shell（一）文件描述符与重定向/" rel="next" title="Linux反弹shell（一）文件描述符与重定向">
+                <i class="fa fa-chevron-left"></i> Linux反弹shell（一）文件描述符与重定向
               </a>
             
           </div>
@@ -484,8 +485,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/10/23/博客转移公告/" rel="prev" title="博客转移公告">
-                博客转移公告 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/10/23/Linux 反弹shell（二）反弹shell的本质/" rel="prev" title="Linux 反弹shell（二）反弹shell的本质">
+                Linux 反弹shell（二）反弹shell的本质 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -575,7 +576,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -586,7 +587,7 @@
               
               <div class="site-state-item site-state-categories">
                 
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">3</span>
                   <span class="site-state-item-name">分类</span>
                 
               </div>
@@ -597,7 +598,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-count">1</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
@@ -692,7 +693,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">59.7k</span>
+    <span title="Site words total count">59.6k</span>
   
 </div>
 
@@ -725,7 +726,7 @@
     <!-- 博客字数统计 -->
     <span class="site-pv">
       <i class="fa fa-pencil"></i>
-      博客全站共： <span class="post-count">59.7k</span> 字
+      博客全站共： <span class="post-count">59.6k</span> 字
     </span>
 </div>
 <!-- 新增访客统计代码 END-->
