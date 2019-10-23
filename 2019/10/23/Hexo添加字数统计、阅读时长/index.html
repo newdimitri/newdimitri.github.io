@@ -88,7 +88,7 @@
 <meta property="og:description" content="统计插件配置NexT 主题默认已经集成了文章【字数统计】、【阅读时长】统计功能，如果我们需要使用，只需要在主题配置文件 _config.yml 中打开 wordcount 统计功能即可。如下所示： 12345678# Post wordcount display settings# Dependencies: https://github.com/willin/hexo-wordcountpost">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4463968-37c9061110bd444a.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2019-10-23T14:53:12.123Z">
+<meta property="og:updated_time" content="2019-10-23T14:54:03.027Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Hexo添加字数统计、阅读时长">
 <meta name="twitter:description" content="统计插件配置NexT 主题默认已经集成了文章【字数统计】、【阅读时长】统计功能，如果我们需要使用，只需要在主题配置文件 _config.yml 中打开 wordcount 统计功能即可。如下所示： 12345678# Post wordcount display settings# Dependencies: https://github.com/willin/hexo-wordcountpost">
@@ -388,7 +388,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  408字
+                  406字
                 </span>
               
 
@@ -439,7 +439,7 @@
 <h4 id="显示文字"><a href="#显示文字" class="headerlink" title="显示文字"></a>显示文字</h4><p>用 Sublime Text 工具打开 post.swig 文件，路径如下：xxx_blog/themes/next/layout/_macro/post.swig</p>
 <p>修改【字数统计】，找到如下代码：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span title=<span class="string">"&#123;&#123; __('post.wordcount') &#125;&#125;"</span>&gt;</span><br><span class="line">    &#123;&#123; wordcount(post.content) &#125;&#125;</span><br><span class="line">&lt;<span class="regexp">/span&gt;</span></span><br></pre></td></tr></table></figure>
-<p>添加 “字” 到  wordcount(post.content)  后面，修改后为：</p>
+<p>添加 “字” 到  wordcount 后面，修改后为：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span title=<span class="string">"&#123;&#123; __('post.wordcount') &#125;&#125;"</span>&gt;</span><br><span class="line">    &#123;&#123; wordcount(post.content) &#125;&#125; 字</span><br><span class="line">&lt;<span class="regexp">/span&gt;</span></span><br></pre></td></tr></table></figure>
 <p>同理，我们修改【阅读时长】，修改后如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;span title=<span class="string">"&#123;&#123; __('post.min2read') &#125;&#125;"</span>&gt;</span><br><span class="line">    &#123;&#123; min2read(post.content) &#125;&#125; 分钟</span><br><span class="line">&lt;<span class="regexp">/span&gt;</span></span><br></pre></td></tr></table></figure>
